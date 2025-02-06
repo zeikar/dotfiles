@@ -16,6 +16,34 @@ Easily configurable and portable across different macOS machines. 🍏
 
 ---
 
+## Prerequisites
+
+Before installing these dotfiles, make sure you have the following installed on your macOS:
+
+- **[Homebrew](https://brew.sh/)**: Package manager for macOS
+
+Install with:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+- **[Oh My Zsh](https://ohmyz.sh/)**: Zsh configuration manager
+
+Install with:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+- **Zsh Plugins**:
+
+Install with:
+
+```bash
+brew install zsh-autosuggestions zsh-syntax-highlighting
+```
+
 ## ⚡ Installation
 
 ### 0️⃣ Install GNU Stow (if not already installed)
