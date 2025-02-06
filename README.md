@@ -27,7 +27,7 @@ brew install stow
 ### 1️⃣ Stow your dotfiles
 
 ```bash
-stow zsh
+./install.sh
 ```
 
 ### 2️⃣ Update your shell
