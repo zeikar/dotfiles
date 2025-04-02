@@ -108,3 +108,5 @@ SAVEHIST=10000000
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+eval "$(uv generate-shell-completion zsh)"
