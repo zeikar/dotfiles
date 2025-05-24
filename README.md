@@ -26,6 +26,10 @@ Install with:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+echo >> ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
 - **[Oh My Zsh](https://ohmyz.sh/)**: Zsh configuration manager
@@ -36,12 +40,22 @@ Install with:
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+### Other Recommended Tools
+
 - **Zsh Plugins**:
 
 Install with:
 
 ```bash
 brew install zsh-autosuggestions zsh-syntax-highlighting
+```
+
+- **[uv](https://docs.astral.sh/uv)**: Python package and project manager
+
+Install with:
+
+```bash
+brew install uv
 ```
 
 ## ⚡ Installation
