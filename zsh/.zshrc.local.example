@@ -1,0 +1,11 @@
+# Example file for local secrets
+# Copy this file to .zshrc.local and add your actual tokens
+# This file is tracked in git, but .zshrc.local is not
+
+# GitHub Token
+# export GITHUB_TOKEN="your_github_token_here"
+
+# Other API Keys
+# export OPENAI_API_KEY="your_api_key_here"
+# export AWS_ACCESS_KEY_ID="your_access_key_here"
+# export AWS_SECRET_ACCESS_KEY="your_secret_key_here"

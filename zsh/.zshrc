@@ -113,3 +113,8 @@ eval "$(uv generate-shell-completion zsh)"
 
 # Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+# Load local secrets (not tracked in git)
+if [ -f ~/.zshrc.local ]; then
+    source ~/.zshrc.local
+fi
