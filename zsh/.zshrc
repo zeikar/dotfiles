@@ -114,7 +114,15 @@ eval "$(uv generate-shell-completion zsh)"
 # Ruby
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 
+# Claude code
+export PATH="$HOME/.local/bin:$PATH"
+
 # Load local secrets (not tracked in git)
 if [ -f ~/.zshrc.local ]; then
     source ~/.zshrc.local
+fi
+
+# OpenClaw Completion
+if [ -f "$HOME/.openclaw/completions/openclaw.zsh" ]; then
+    source "$HOME/.openclaw/completions/openclaw.zsh"
 fi
