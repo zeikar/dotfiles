@@ -126,3 +126,6 @@ fi
 if [ -f "$HOME/.openclaw/completions/openclaw.zsh" ]; then
     source "$HOME/.openclaw/completions/openclaw.zsh"
 fi
+
+# OpenJDK
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
