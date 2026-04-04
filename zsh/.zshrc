@@ -72,7 +72,9 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+if [[ -d "$ZSH" ]]; then
+  source "$ZSH/oh-my-zsh.sh"
+fi
 
 # User configuration
 
@@ -106,16 +108,40 @@ source $ZSH/oh-my-zsh.sh
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+typeset -U path PATH
 
-eval "$(uv generate-shell-completion zsh)"
+if command -v brew >/dev/null 2>&1; then
+  BREW_PREFIX="$(brew --prefix)"
 
-# Ruby
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+  autosuggestions_file="$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  if [[ -f "$autosuggestions_file" ]]; then
+    source "$autosuggestions_file"
+  fi
+
+  syntax_highlighting_file="$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  if [[ -f "$syntax_highlighting_file" ]]; then
+    source "$syntax_highlighting_file"
+  fi
+
+  ruby_bin="$BREW_PREFIX/opt/ruby/bin"
+  if [[ -d "$ruby_bin" ]]; then
+    path=("$ruby_bin" $path)
+  fi
+
+  openjdk_bin="$BREW_PREFIX/opt/openjdk/bin"
+  if [[ -d "$openjdk_bin" ]]; then
+    path=("$openjdk_bin" $path)
+  fi
+fi
 
 # Claude code
-export PATH="$HOME/.local/bin:$PATH"
+if [[ -d "$HOME/.local/bin" ]]; then
+  path=("$HOME/.local/bin" $path)
+fi
+
+if command -v uv >/dev/null 2>&1; then
+  eval "$(uv generate-shell-completion zsh)"
+fi
 
 # Load local secrets (not tracked in git)
 if [ -f ~/.zshrc.local ]; then
@@ -127,5 +153,4 @@ if [ -f "$HOME/.openclaw/completions/openclaw.zsh" ]; then
     source "$HOME/.openclaw/completions/openclaw.zsh"
 fi
 
-# OpenJDK
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH
