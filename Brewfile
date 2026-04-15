@@ -1,5 +1,7 @@
 # GitHub command-line tool
 brew "gh"
+# Tools and libraries to manipulate images in many formats
+brew "imagemagick"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Development kit for the Java programming language
