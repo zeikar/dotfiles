@@ -18,6 +18,9 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 defaults write com.apple.finder AppleShowAllFiles -bool true
 
+# Finder: sort by Kind by default.
+defaults write com.apple.finder FXArrangeGroupViewBy -string "Kind"
+
 # Dock: autohide and remove the delay.
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -float 0
