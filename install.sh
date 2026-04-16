@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-DOTFILES=("zsh" "claude")
+DOTFILES=("zsh" "claude" "codex")
 BACKUP_ROOT="$HOME/.dotfiles-backups/$(date +%Y%m%d-%H%M%S)"
 
 LOCAL_TEMPLATES=(
@@ -44,7 +44,7 @@ for dir in "${DOTFILES[@]}"; do
     files_found=()
     while IFS= read -r file; do
         files_found+=("$file")
-    done < <(find "$dir" -type f ! -name "*.example" | sort)
+    done < <(find "$dir" \( -type f -o -type l \) ! -name "*.example" | sort)
     conflicts=()
 
     for file in "${files_found[@]}"; do
