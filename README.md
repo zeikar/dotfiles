@@ -4,6 +4,7 @@ Minimal macOS dotfiles managed with GNU Stow.
 
 ## What is tracked
 
+- `claude/` for Claude Code global configuration (`CLAUDE.md`)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
 - `macos-defaults.sh` for common macOS preferences
@@ -76,6 +77,9 @@ export OPENAI_API_KEY="your_key_here"
 ```text
 dotfiles/
 ├── Brewfile
+├── claude/
+│   └── .claude/
+│       └── CLAUDE.md
 ├── install.sh
 ├── macos-defaults.sh
 ├── zsh/
