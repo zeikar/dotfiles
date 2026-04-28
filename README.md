@@ -4,7 +4,7 @@ Minimal macOS dotfiles managed with GNU Stow.
 
 ## What is tracked
 
-- `claude/` for Claude Code global configuration (`CLAUDE.md`)
+- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`)
 - `codex/` for Codex CLI configuration (`AGENTS.md` → symlink to `CLAUDE.md`)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
@@ -80,7 +80,8 @@ dotfiles/
 ├── Brewfile
 ├── claude/
 │   └── .claude/
-│       └── CLAUDE.md
+│       ├── CLAUDE.md
+│       └── settings.json
 ├── codex/
 │   └── .codex/
 │       └── AGENTS.md -> ../../claude/.claude/CLAUDE.md
