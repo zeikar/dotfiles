@@ -27,5 +27,9 @@
     }
   },
   "effortLevel": "xhigh",
-  "teammateMode": "in-process"
+  "teammateMode": "in-process",
+  "skipDangerousModePermissionPrompt": true,
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  }
 }
