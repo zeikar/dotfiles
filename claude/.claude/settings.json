@@ -28,6 +28,10 @@
   },
   "effortLevel": "xhigh",
   "teammateMode": "in-process",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "skipDangerousModePermissionPrompt": true,
   "permissions": {
     "defaultMode": "bypassPermissions"
