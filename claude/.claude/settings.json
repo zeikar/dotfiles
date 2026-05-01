@@ -2,6 +2,13 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
   "model": "opus[1m]",
   "enabledPlugins": {
     "codex@openai-codex": true,
@@ -27,13 +34,6 @@
     }
   },
   "effortLevel": "xhigh",
-  "teammateMode": "in-process",
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
   "skipDangerousModePermissionPrompt": true,
-  "permissions": {
-    "defaultMode": "bypassPermissions"
-  }
+  "teammateMode": "in-process"
 }
