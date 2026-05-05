@@ -9,6 +9,7 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
+- Read the project's CLAUDE.md and any referenced docs before touching code. Don't reinvent existing conventions.
 - State your assumptions explicitly. If uncertain, ask.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
@@ -59,6 +60,21 @@ For multi-step tasks, state a brief plan:
 ```
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+## 5. Defer Commits to Stop-Time Review
+
+**Don't commit the moment work finishes. Leave a turn for the stop-time hook to review.**
+
+When a stop-time review hook is active (e.g. Codex), committing inside the same turn as the work bypasses it.
+
+Rhythm:
+1. Make changes + verify locally (lint, typecheck, tests). End the turn.
+2. Stop hook reviews the diff. If it flags issues, address them next turn before committing.
+3. Next turn: commit the previous turn's work first, then start new work.
+
+Exceptions:
+- User explicitly says "commit now" / "push now" → commit immediately.
+- This rule does not relax the "executing actions with care" guidance — push/merge still need explicit approval.
 
 ---
 
