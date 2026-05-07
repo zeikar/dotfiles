@@ -61,21 +61,6 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## 5. Defer Commits to Stop-Time Review
-
-**Don't commit the moment work finishes. Leave a turn for the stop-time hook to review.**
-
-When a stop-time review hook is active (e.g. Codex), committing inside the same turn as the work bypasses it.
-
-Rhythm:
-1. Make changes + verify locally (lint, typecheck, tests). End the turn.
-2. Stop hook reviews the diff. If it flags issues, address them next turn before committing.
-3. Next turn: commit the previous turn's work first, then start new work.
-
-Exceptions:
-- User explicitly says "commit now" / "push now" → commit immediately.
-- This rule does not relax the "executing actions with care" guidance — push/merge still need explicit approval.
-
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
