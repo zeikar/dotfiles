@@ -11,13 +11,16 @@
   },
   "model": "opus[1m]",
   "enabledPlugins": {
-    "codex@openai-codex": true,
+    "codex@openai-codex": false,
     "harness@harness-marketplace": true,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true
+    "claude-md-management@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "firebase@claude-plugins-official": true,
+    "hyperclaude@hyperclaude": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -30,6 +33,13 @@
       "source": {
         "source": "github",
         "repo": "revfactory/harness"
+      },
+      "autoUpdate": true
+    },
+    "hyperclaude": {
+      "source": {
+        "source": "github",
+        "repo": "zeikar/hyperclaude"
       }
     }
   },
