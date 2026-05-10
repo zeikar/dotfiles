@@ -40,7 +40,8 @@
       "source": {
         "source": "github",
         "repo": "zeikar/hyperclaude"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "xhigh",
