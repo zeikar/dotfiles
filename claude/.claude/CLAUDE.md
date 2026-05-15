@@ -9,8 +9,8 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- Read the project's CLAUDE.md and any referenced docs before touching code. Don't reinvent existing conventions.
-- State your assumptions explicitly. If uncertain, ask.
+- Read project instruction files (CLAUDE.md / AGENTS.md / linked docs) before touching code. Don't reinvent existing conventions.
+- State assumptions explicitly. Ask before anything risky (behavior, security, data loss, public API); for low-risk calls, note the assumption and proceed.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
@@ -22,7 +22,7 @@ Before implementing:
 - No features beyond what was asked.
 - No abstractions for single-use code.
 - No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
+- No speculative error handling; do handle realistic I/O, network, input, and parsing failures.
 - Don't silently swallow errors (empty catch / `except: pass`).
 - Comment *why*, not *what*. No narrating self-evident code.
 - One responsibility per file/function. Split when a unit does two unrelated things.
