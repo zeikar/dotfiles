@@ -61,6 +61,16 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+## 5. Efficient Search
+
+**Never scan broad filesystem roots. Narrow scope first.**
+
+- No `find` / `grep` over `$HOME`, `/`, or other huge unscoped roots.
+  Bad: `find /Users/zeikar -path '*sdk/testsuite*' -name '*.go'`
+- Locate the relevant subtree first (list one level, follow the path), then search inside it.
+- Prefer `rg` and `fd`/glob over recursive `find`, pinned to the project or module dir.
+- If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
+
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
