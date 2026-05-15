@@ -11,9 +11,9 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 Before implementing:
 - Read project instruction files (CLAUDE.md / AGENTS.md / linked docs) before touching code. Don't reinvent existing conventions.
 - State assumptions explicitly. Ask before anything risky (behavior, security, data loss, public API); for low-risk calls, note the assumption and proceed.
-- If multiple interpretations exist, present them - don't pick silently.
+- If multiple meaningful interpretations exist, present them; for low-risk choices, state the chosen interpretation and proceed.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- If something important is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
