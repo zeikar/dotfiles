@@ -23,6 +23,9 @@ Before implementing:
 - No abstractions for single-use code.
 - No "flexibility" or "configurability" that wasn't requested.
 - No error handling for impossible scenarios.
+- Don't silently swallow errors (empty catch / `except: pass`).
+- Comment *why*, not *what*. No narrating self-evident code.
+- One responsibility per file/function. Split when a unit does two unrelated things.
 - If you write 200 lines and it could be 50, rewrite it.
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
