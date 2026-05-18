@@ -20,7 +20,8 @@
     "context7@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "firebase@claude-plugins-official": true,
-    "hyperclaude@hyperclaude": true
+    "hyperclaude@hyperclaude": true,
+    "plugin-dev@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
