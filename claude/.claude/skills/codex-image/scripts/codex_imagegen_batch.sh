@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # codex_imagegen_batch.sh
 #
+# Approach inspired by https://github.com/revfactory/skills (codex-image);
+# independently reimplemented.
+#
 # Generate N images with Codex CLI's image_generation tool, running up to
 # MAX_PARALLEL `codex exec` jobs concurrently and proceeding in sequential
 # batches once that many are in flight.
