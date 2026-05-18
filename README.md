@@ -4,7 +4,7 @@ Minimal macOS dotfiles managed with GNU Stow.
 
 ## What is tracked
 
-- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`)
+- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `skills/`)
 - `codex/` for Codex CLI configuration (`AGENTS.md` → symlink to `CLAUDE.md`)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
@@ -81,7 +81,9 @@ dotfiles/
 ├── claude/
 │   └── .claude/
 │       ├── CLAUDE.md
-│       └── settings.json
+│       ├── settings.json
+│       └── skills/
+│           └── codex-image/   # codex image_generation skill (single/batch/parallel)
 ├── codex/
 │   └── .codex/
 │       └── AGENTS.md -> ../../claude/.claude/CLAUDE.md
