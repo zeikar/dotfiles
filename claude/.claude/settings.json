@@ -11,32 +11,15 @@
   },
   "model": "opus[1m]",
   "enabledPlugins": {
-    "codex@openai-codex": false,
-    "harness@harness-marketplace": true,
-    "superpowers@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": false,
     "firebase@claude-plugins-official": true,
     "hyperclaude@hyperclaude": true,
     "plugin-dev@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
-    },
-    "harness-marketplace": {
-      "source": {
-        "source": "github",
-        "repo": "revfactory/harness"
-      },
-      "autoUpdate": true
-    },
     "hyperclaude": {
       "source": {
         "source": "github",
