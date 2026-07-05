@@ -4,7 +4,7 @@ Minimal macOS dotfiles managed with GNU Stow.
 
 ## What is tracked
 
-- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `skills/`)
+- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `skills/`, `agents/`)
 - `codex/` for Codex CLI configuration (`AGENTS.md` → symlink to `CLAUDE.md`)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
@@ -78,12 +78,17 @@ export OPENAI_API_KEY="your_key_here"
 ```text
 dotfiles/
 ├── Brewfile
+├── CLAUDE.md          # editing notes for coding agents working on this repo
+├── LICENSE
 ├── claude/
 │   └── .claude/
 │       ├── CLAUDE.md
 │       ├── settings.json
+│       ├── agents/
+│       │   └── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
 │       └── skills/
-│           └── codex-image/   # codex image_generation skill (single/batch/parallel)
+│           ├── codex-image/          # codex image_generation skill (single/batch/parallel)
+│           └── visual-review/        # Playwright MCP rendering critique (reads per-repo visual-review-app companion)
 ├── codex/
 │   └── .codex/
 │       └── AGENTS.md -> ../../claude/.claude/CLAUDE.md
