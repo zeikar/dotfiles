@@ -14,4 +14,9 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
   Stow folds each skill *subdir* into its own symlink — coexists fine. Caveat:
   on a fresh machine where `~/.claude/skills/` does not yet exist, run Claude
   Code once before `install.sh` so Stow links per-skill, not the whole dir.
+- Agents live in `claude/.claude/agents/<name>.md`. Unlike skills,
+  `~/.claude/agents` did not pre-exist, so Stow linked the *whole dir* as one
+  symlink — intended. Consequence: anything Claude Code writes into
+  `~/.claude/agents/` lands inside this repo as an untracked file; review it,
+  then commit or delete.
 - Don't track machine-local/secret files (`~/.zshrc.local`, auth tokens).
