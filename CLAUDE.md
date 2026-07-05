@@ -10,7 +10,7 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
   One edit changes both Claude and Codex — intended; don't "fix" it.
 - Stow-managed: edit files inside the repo, not the linked copies in `$HOME`.
 - Skills live in `claude/.claude/skills/<name>/`. Because `~/.claude/skills/`
-  already exists as a real dir (holds plugin symlinks like `find-skills`),
+  already exists as a real dir (Claude Code and skill installers create it),
   Stow folds each skill *subdir* into its own symlink — coexists fine. Caveat:
   on a fresh machine where `~/.claude/skills/` does not yet exist, run Claude
   Code once before `install.sh` so Stow links per-skill, not the whole dir.
