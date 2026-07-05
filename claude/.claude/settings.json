@@ -31,5 +31,6 @@
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "teammateMode": "in-process"
+  "teammateMode": "in-process",
+  "tui": "fullscreen"
 }
