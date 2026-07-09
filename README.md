@@ -87,7 +87,7 @@ dotfiles/
 │       ├── agents/
 │       │   └── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
 │       └── skills/
-│           ├── autopilot/            # fire-and-forget autonomous-loop runner over hyperclaude's hyper-auto (scheduled/immediate)
+│           ├── hyper-autopilot/      # fire-and-forget autonomous-loop runner over hyperclaude's hyper-auto (scheduled/immediate; local, non-GitHub)
 │           ├── codex-image/          # codex image_generation skill (single/batch/parallel)
 │           └── visual-review/        # Playwright MCP rendering critique (reads per-repo visual-review-app companion)
 ├── codex/
