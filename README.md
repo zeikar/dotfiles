@@ -73,6 +73,21 @@ export GITHUB_TOKEN="your_token_here"
 export OPENAI_API_KEY="your_key_here"
 ```
 
+## Claude Code + orca IDE
+
+`claude/.claude/settings.json` carries agent-hooks for the [orca IDE](https://www.onorca.dev/),
+which is installed separately (not by this repo). Each hook is guarded with `-f/-r/-x`, so it
+no-ops on machines where orca is absent.
+
+Installing or launching orca can replace the `~/.claude/settings.json` stow symlink with a real
+file (re-injecting its hooks). To restore the symlink:
+
+```bash
+rm ~/.claude/settings.json                 # if orca left a real file here
+git checkout claude/.claude/settings.json  # if it dirtied the tracked file
+stow --restow --target="$HOME" claude      # relink into $HOME
+```
+
 ## Structure
 
 ```text

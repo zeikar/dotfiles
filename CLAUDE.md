@@ -19,4 +19,9 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
   symlink — intended. Consequence: anything Claude Code writes into
   `~/.claude/agents/` lands inside this repo as an untracked file; review it,
   then commit or delete.
+- `claude/.claude/settings.json` carries orca IDE agent-hooks (guarded `-f/-r/-x`,
+  so they no-op without orca). Installing/launching orca can replace the
+  `~/.claude/settings.json` stow symlink with a real file; recover with
+  `rm ~/.claude/settings.json`, `git checkout claude/.claude/settings.json`,
+  then `stow --restow --target="$HOME" claude`.
 - Don't track machine-local/secret files (`~/.zshrc.local`, auth tokens).
