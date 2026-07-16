@@ -4,7 +4,7 @@ Minimal macOS dotfiles managed with GNU Stow.
 
 ## What is tracked
 
-- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `skills/`, `agents/`)
+- `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `statusline.sh`, `skills/`, `agents/`)
 - `codex/` for Codex CLI configuration (`AGENTS.md` → symlink to `CLAUDE.md`)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
@@ -88,6 +88,22 @@ git checkout claude/.claude/settings.json  # if it dirtied the tracked file
 stow --restow --target="$HOME" claude      # relink into $HOME
 ```
 
+## Claude Code status line
+
+`claude/.claude/statusline.sh` is a custom [status line](https://code.claude.com/docs/en/statusline)
+registered under `statusLine` in `settings.json`. It reads the JSON session data Claude Code
+pipes on stdin and prints two rows:
+
+- **Line 1** — model · reasoning effort, directory, git branch with staged/modified/untracked
+  counts, worktree, open PR + review state, session cost and elapsed time
+- **Line 2** — three equal-width gauges: context window, 5-hour and 7-day rate limits. Each has
+  its own hue (context, 5h, 7d) and turns red past its critical threshold; the 5h gauge shows a
+  reset countdown, the 7d gauge its reset date
+
+Rate-limit gauges appear only for Pro/Max accounts after the first API response; git and cost
+segments degrade gracefully outside a repo or early in a session. `refreshInterval` keeps the
+gauges live while background subagents run.
+
 ## Structure
 
 ```text
@@ -99,6 +115,7 @@ dotfiles/
 │   └── .claude/
 │       ├── CLAUDE.md
 │       ├── settings.json
+│       ├── statusline.sh        # custom 2-line status line (context + rate-limit gauges)
 │       ├── agents/
 │       │   └── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
 │       └── skills/

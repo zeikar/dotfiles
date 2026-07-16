@@ -33,6 +33,11 @@
   "theme": "auto",
   "teammateMode": "in-process",
   "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "refreshInterval": 10
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
