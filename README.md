@@ -1,6 +1,8 @@
-# My macOS Dotfiles
+# macOS Dotfiles + Claude Code Config
 
-Minimal macOS dotfiles managed with GNU Stow.
+macOS dotfiles managed with GNU Stow. Most of it is my **Claude Code** setup —
+`CLAUDE.md`, `settings.json`, custom skills, and subagents — plus the usual
+zsh, Brewfile, and macOS defaults.
 
 ## What is tracked
 
