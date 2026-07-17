@@ -31,7 +31,7 @@
   "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "teammateMode": "in-process",
+  "teammateMode": "auto",
   "tui": "fullscreen",
   "statusLine": {
     "type": "command",
