@@ -29,6 +29,7 @@
     }
   },
   "effortLevel": "xhigh",
+  "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "teammateMode": "auto",
