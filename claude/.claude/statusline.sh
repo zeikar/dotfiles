@@ -67,11 +67,6 @@ fmt_dur() {
   else printf '%ds' "$s"; fi
 }
 
-# Calendar date (month/day) from an epoch — BSD date, GNU fallback.
-fmt_date() {
-  date -r "$1" '+%-m/%-d' 2>/dev/null || date -d "@$1" '+%-m/%-d' 2>/dev/null
-}
-
 # ============================ LINE 1: identity ============================
 line1="${CYAN}${B}${MODEL}${R}"
 [ -n "$EFFORT" ] && line1+="${DIM}·${EFFORT}${R}"
@@ -142,11 +137,11 @@ if [ -n "$R5" ]; then
   line2+="${GAP}${seg}"
 fi
 
-# 7-day rate limit (blue; critical at 80%; reset as calendar date)
+# 7-day rate limit (blue; critical at 80%; reset as countdown)
 if [ -n "$R7" ]; then
   p=$(printf '%.0f' "$R7")
   seg="${DIM}7d${R} $(bar_color "$p" "$BLUE" 80)$(make_bar "$p" "$BAR_W")${R} ${p}%"
-  [ -n "$R7RESET" ] && seg+=" ${DIM}⟳$(fmt_date "$R7RESET")${R}"
+  [ -n "$R7RESET" ] && seg+=" ${DIM}⟳$(fmt_dur $((R7RESET-now)))${R}"
   line2+="${GAP}${seg}"
 fi
 
