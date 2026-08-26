@@ -2,6 +2,8 @@
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
+This file is also `~/.codex/AGENTS.md` (symlink) - edits here change Claude *and* Codex.
+
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
 ## 1. Think Before Coding
@@ -44,6 +46,12 @@ When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
+Surgical means minimal scope, not append-only. If your change duplicates what an
+existing path already does, change that path or extract the shared piece - don't
+ship a second one beside it, because the next fix lands on one and not the other.
+When you can't do that inside the task's scope, say so rather than forking the
+behavior. For prose - docs and comments - see §6.
+
 The test: Every changed line should trace directly to the user's request.
 
 ## 4. Goal-Driven Execution
@@ -71,9 +79,46 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - No `find` / `grep` over `$HOME`, `/`, or other huge unscoped roots.
   Bad: `find /Users/zeikar -path '*sdk/testsuite*' -name '*.go'`
 - Locate the relevant subtree first (list one level, follow the path), then search inside it.
-- Prefer `rg` and `fd`/glob over recursive `find`, pinned to the project or module dir.
+- Prefer the harness's own search tools (Grep/Glob), or `rg` if present, over
+  recursive `find` - pinned to the project or module dir. (`fd` is not installed
+  on this machine, and `rg` may exist only inside Claude Code.)
 - If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
+
+## 6. Edit In Place, Don't Accrete
+
+**When new information changes what a text says, revise that text. Don't append beside it.**
+
+Scope: prose - docs, code comments, and instruction files like this one. For the
+same reflex in code, see §3; revising code carries risks prose does not.
+
+Adding feels safe; touching existing lines feels risky. Repeated over many
+sessions that bias produces docs and comments that say the same thing twice in
+different words, contradict themselves a paragraph apart, and file new facts
+under whatever heading happened to be nearest.
+
+Before adding text next to existing text:
+- Does your addition contradict, narrow, or date what's above? Fix that claim
+  instead of qualifying it from below.
+- Is it landing here because it belongs here, or because this is where you were
+  reading? If it fits no existing section, give it its own - the nearest heading
+  is not the right heading.
+
+Delete what your edit supersedes: dead qualifiers, stale "now"/"currently"/"new"
+framing, sentences the revision already covers. Same for code comments - correct
+the wrong comment, never add a second one explaining why the first is outdated.
+
+Diffs hide this failure: two copies of a rule twenty lines apart each look fine
+in their own hunk. After editing, re-read the whole section you touched, not just
+your diff.
+
+This does not override §3. It fires only where your change and the existing text
+overlap; text your change doesn't affect stays untouched. And precise, hard-won
+text - a documented failure mode, a warning added after a real bug - gets its
+placement fixed, not its content, unless you can verify the content is wrong.
+
+The test: if a reader has to read both the old text and yours to get one answer,
+you appended where you should have edited.
 
 ---
 
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, documents that stop growing a second copy of the same rule, and clarifying questions come before implementation rather than after mistakes.
