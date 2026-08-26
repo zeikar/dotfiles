@@ -2,10 +2,6 @@
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
-This file is also `~/.codex/AGENTS.md` (symlink) - edits here change Claude *and* Codex.
-
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
-
 ## 1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
@@ -91,30 +87,25 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 Scope: prose - docs, code comments, and instruction files like this one. For the
 same reflex in code, see §3; revising code carries risks prose does not.
 
-Adding feels safe; touching existing lines feels risky. Repeated over many
-sessions that bias produces docs and comments that say the same thing twice in
-different words, contradict themselves a paragraph apart, and file new facts
-under whatever heading happened to be nearest.
+Adding feels safe and touching existing lines feels risky - repeated over many
+sessions, that bias produces docs that say the same thing twice, contradict
+themselves a paragraph apart, and file new facts under the nearest heading.
 
 Before adding text next to existing text:
 - Does your addition contradict, narrow, or date what's above? Fix that claim
   instead of qualifying it from below.
-- Is it landing here because it belongs here, or because this is where you were
-  reading? If it fits no existing section, give it its own - the nearest heading
-  is not the right heading.
+- Does it belong here, or is this just where you were reading? If it fits no
+  existing section, give it its own.
+- Does it supersede anything? Delete that - dead qualifiers, stale
+  "now"/"currently" framing, sentences the revision already covers. Correct a
+  wrong comment; never add a second one explaining why the first is outdated.
 
-Delete what your edit supersedes: dead qualifiers, stale "now"/"currently"/"new"
-framing, sentences the revision already covers. Same for code comments - correct
-the wrong comment, never add a second one explaining why the first is outdated.
+Diffs hide this: two copies of a rule twenty lines apart each look fine in their
+own hunk. Re-read the whole section you touched, not just your diff.
 
-Diffs hide this failure: two copies of a rule twenty lines apart each look fine
-in their own hunk. After editing, re-read the whole section you touched, not just
-your diff.
-
-This does not override §3. It fires only where your change and the existing text
-overlap; text your change doesn't affect stays untouched. And precise, hard-won
-text - a documented failure mode, a warning added after a real bug - gets its
-placement fixed, not its content, unless you can verify the content is wrong.
+This does not override §3 - it fires only where your change and the existing text
+overlap. Hard-won text (a documented failure mode, a warning added after a real
+bug) gets its placement fixed, not its content, unless you can show it is wrong.
 
 The test: if a reader has to read both the old text and yours to get one answer,
 you appended where you should have edited.
