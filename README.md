@@ -78,24 +78,8 @@ export OPENAI_API_KEY="your_key_here"
 ## Claude Code + orca IDE
 
 `claude/.claude/settings.json` carries agent-hooks for the [orca IDE](https://www.onorca.dev/),
-which is installed separately (not by this repo). Each hook is guarded with `-f/-r/-x`, so it
-no-ops on machines where orca is absent.
-
-orca regenerates these hooks every time it launches, writing through the stow symlink. The
-tracked file then shows a large diff — commit it. The hook command is orca's generated output,
-so hand-trimming it just reproduces the same diff on the next launch. orca also leaves a
-`settings.json.bak` next to the config, which `*.bak` keeps out of git.
-
-Older orca releases replaced the `~/.claude/settings.json` symlink with a real file instead of
-writing through it. If that behaviour comes back:
-
-```bash
-rm ~/.claude/settings.json             # drop the real file orca left
-stow --restow --target="$HOME" claude  # relink into $HOME
-```
-
-Beyond Claude Code, orca writes agent-hook configs into a `~/.<agent>` directory for every CLI
-it supports, whether or not that CLI is installed. Those are orca's, not this repo's.
+installed separately (not by this repo). Each hook is guarded with `-f/-r/-x`, so it no-ops
+where orca is absent. orca regenerates them on every launch, so expect that file to churn.
 
 ## Structure
 
