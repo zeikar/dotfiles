@@ -1,1 +1,3 @@
 .hyperclaude/
+.DS_Store
+*.bak
