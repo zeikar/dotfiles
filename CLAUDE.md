@@ -20,8 +20,15 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
   `~/.claude/agents/` lands inside this repo as an untracked file; review it,
   then commit or delete.
 - `claude/.claude/settings.json` carries orca IDE agent-hooks (guarded `-f/-r/-x`,
-  so they no-op without orca). Installing/launching orca can replace the
-  `~/.claude/settings.json` stow symlink with a real file; recover with
-  `rm ~/.claude/settings.json`, `git checkout claude/.claude/settings.json`,
-  then `stow --restow --target="$HOME" claude`.
+  so they no-op without orca). orca rewrites them on every launch, writing
+  *through* the stow symlink, so the tracked file picks up a large diff — commit
+  it. The hook command is orca's generated output, not hand-written, so trimming
+  it back only reproduces the same diff next launch. orca also drops a
+  `settings.json.bak` beside the config; `*.bak` is gitignored. Older orca
+  releases replaced the `~/.claude/settings.json` symlink with a real file
+  instead; if that returns, `rm ~/.claude/settings.json` then
+  `stow --restow --target="$HOME" claude`.
+- orca writes agent-hook configs for every CLI it supports, installed or not
+  (`~/.grok`, `~/.hermes`, `~/.openclaude`, …). They belong to orca, not here —
+  don't track them.
 - Don't track machine-local/secret files (`~/.zshrc.local`, auth tokens).
