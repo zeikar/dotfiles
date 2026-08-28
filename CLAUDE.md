@@ -9,16 +9,13 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
 - `codex/.codex/AGENTS.md` symlinks to the **same** `claude/.claude/CLAUDE.md`.
   One edit changes both Claude and Codex — intended; don't "fix" it.
 - Stow-managed: edit files inside the repo, not the linked copies in `$HOME`.
-- Skills live in `claude/.claude/skills/<name>/`. Because `~/.claude/skills/`
-  already exists as a real dir (Claude Code and skill installers create it),
-  Stow folds each skill *subdir* into its own symlink — coexists fine. Caveat:
-  on a fresh machine where `~/.claude/skills/` does not yet exist, run Claude
-  Code once before `install.sh` so Stow links per-skill, not the whole dir.
-- Agents live in `claude/.claude/agents/<name>.md`. Unlike skills,
-  `~/.claude/agents` did not pre-exist, so Stow linked the *whole dir* as one
-  symlink — intended. Consequence: anything Claude Code writes into
-  `~/.claude/agents/` lands inside this repo as an untracked file; review it,
-  then commit or delete.
+- Skills live in `claude/.claude/skills/<name>/`, agents in
+  `claude/.claude/agents/<name>.md`. Stow linked both as *whole-dir* symlinks
+  (`~/.claude/skills` and `~/.claude/agents` point at this repo) — intended.
+  Consequence: anything Claude Code or a skill installer writes into those dirs
+  lands inside this repo as an untracked file; review it, then commit or delete.
+  (Shape depends on the target: Stow folds per-subdir instead when the `$HOME`
+  dir already exists as a real dir.)
 - `claude/.claude/settings.json` carries orca IDE agent-hooks. orca rewrites them
   through the stow symlink on every launch, so a large unrequested diff there is
   expected — commit it rather than trimming it back.
