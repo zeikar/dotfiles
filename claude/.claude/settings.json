@@ -9,36 +9,6 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus",
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
-    "firebase@claude-plugins-official": true,
-    "hyperclaude@hyperclaude": true,
-    "plugin-dev@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "hyperclaude": {
-      "source": {
-        "source": "github",
-        "repo": "zeikar/hyperclaude"
-      },
-      "autoUpdate": true
-    }
-  },
-  "effortLevel": "xhigh",
-  "showThinkingSummaries": true,
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "auto",
-  "teammateMode": "auto",
-  "tui": "fullscreen",
-  "statusLine": {
-    "type": "command",
-    "command": "$HOME/.claude/statusline.sh",
-    "refreshInterval": 10
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -176,5 +146,34 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "refreshInterval": 10
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "firebase@claude-plugins-official": true,
+    "hyperclaude@hyperclaude": true,
+    "plugin-dev@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "hyperclaude": {
+      "source": {
+        "source": "github",
+        "repo": "zeikar/hyperclaude"
+      },
+      "autoUpdate": true
+    }
+  },
+  "effortLevel": "xhigh",
+  "tui": "fullscreen",
+  "showThinkingSummaries": true,
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "teammateMode": "auto"
 }
