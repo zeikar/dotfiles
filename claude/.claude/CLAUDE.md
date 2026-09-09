@@ -6,12 +6,12 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
-Before implementing:
-- Read project instruction files (CLAUDE.md / AGENTS.md / linked docs) before touching code. Don't reinvent existing conventions.
-- State assumptions explicitly. Ask before anything risky (behavior, security, data loss, public API); for low-risk calls, note the assumption and proceed.
-- If multiple meaningful interpretations exist, present them; for low-risk choices, state the chosen interpretation and proceed.
+- Read project instruction files (CLAUDE.md / AGENTS.md / linked docs) before
+  touching code. Don't reinvent existing conventions.
+- Ask before anything risky - behavior, security, data loss, public API. For
+  low-risk calls, and for ambiguity that is cheap to get wrong, state the
+  assumption or the reading you picked and proceed.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something important is unclear, stop. Name what's confusing. Ask.
 
 ## 2. Simplicity First
 
@@ -28,64 +28,31 @@ Before implementing:
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
-## 3. Surgical Changes
+## 3. Scope of Change
 
-**Touch only what you must. Clean up only your own mess.**
+**Touch only what you must - but where you do touch, fix rather than duplicate.**
 
 When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
 - If you notice unrelated dead code, mention it - don't delete it.
+- Remove imports/variables/functions that YOUR changes made unused; leave
+  pre-existing dead code alone unless asked.
 
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
+Minimal scope is not the same as append-only. Where your change *overlaps*
+something that already exists, change that thing:
 
-Surgical means minimal scope, not append-only. If your change duplicates what an
-existing path already does, change that path or extract the shared piece - don't
-ship a second one beside it, because the next fix lands on one and not the other.
-When you can't do that inside the task's scope, say so rather than forking the
-behavior. For prose - docs and comments - see §6.
+- **Code.** If your change duplicates what an existing path already does, change
+  that path or extract the shared piece - don't ship a second one beside it,
+  because the next fix lands on one and not the other. When you can't do that
+  inside the task's scope, say so rather than forking the behavior.
+- **Prose** - docs, comments, and instruction files like this one. When new
+  information changes what a text says, revise that text; don't append beside it.
+  Prose gets the stricter rule because you can rewrite a stale sentence outright;
+  revising code carries risks prose does not.
 
-The test: Every changed line should trace directly to the user's request.
-
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
-## 5. Efficient Search
-
-**Never scan broad filesystem roots. Narrow scope first.**
-
-- No `find` / `grep` over `$HOME`, `/`, or other huge unscoped roots.
-  Bad: `find /Users/zeikar -path '*sdk/testsuite*' -name '*.go'`
-- Locate the relevant subtree first (list one level, follow the path), then search inside it.
-- Prefer the harness's own search tools (Grep/Glob), or `rg` if present, over
-  recursive `find` - pinned to the project or module dir. (`fd` is not installed
-  on this machine, and `rg` may exist only inside Claude Code.)
-- If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
-
-## 6. Edit In Place, Don't Accrete
-
-**When new information changes what a text says, revise that text. Don't append beside it.**
-
-Scope: prose - docs, code comments, and instruction files like this one. For the
-same reflex in code, see §3; revising code carries risks prose does not.
+### Editing prose in place
 
 Adding feels safe and touching existing lines feels risky - repeated over many
 sessions, that bias produces docs that say the same thing twice, contradict
@@ -103,12 +70,35 @@ Before adding text next to existing text:
 Diffs hide this: two copies of a rule twenty lines apart each look fine in their
 own hunk. Re-read the whole section you touched, not just your diff.
 
-This does not override §3 - it fires only where your change and the existing text
-overlap. Hard-won text (a documented failure mode, a warning added after a real
-bug) gets its placement fixed, not its content, unless you can show it is wrong.
+Hard-won text (a documented failure mode, a warning added after a real bug) gets
+its placement fixed, not its content, unless you can show it is wrong.
 
-The test: if a reader has to read both the old text and yours to get one answer,
-you appended where you should have edited.
+The test: every changed line traces either to the user's request or to an overlap
+your own change created. If a reader has to read both the old text and yours to
+get one answer, you appended where you should have edited.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Turn the task into something you can watch fail, then pass:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+## 5. Efficient Search
+
+**Never scan broad filesystem roots. Narrow scope first.**
+
+- No `find` / `grep` over `$HOME`, `/`, or other huge unscoped roots.
+  Bad: `find /Users/zeikar -path '*sdk/testsuite*' -name '*.go'`
+- Locate the relevant subtree first (list one level, follow the path), then search inside it.
+- Prefer the harness's own search tools (Grep/Glob), or `rg` if present, over
+  recursive `find` - pinned to the project or module dir. (`fd` is not installed
+  on this machine, and `rg` may exist only inside Claude Code.)
+- If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
 
 ---
 
