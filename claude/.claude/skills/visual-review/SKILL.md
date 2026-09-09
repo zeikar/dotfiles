@@ -50,9 +50,12 @@ Do NOT stop at "it renders / the flow works." Default to skepticism: **assume so
 
 If genuinely nothing is found, say *what was specifically inspected* — never just declare "looks good."
 
-## Optional second pass — aesthetic-critic
+## Follow-up passes — aesthetic-critic and usability-critic
 
-For design-meaningful changes where "not broken" isn't enough, dispatch the **`aesthetic-critic`** agent (personal agent, `~/.claude/agents/aesthetic-critic.md`) AFTER the functional review, pointing it at the SAME saved screenshots. It judges taste and craft — hierarchy, spacing rhythm, typography, distinctiveness — from the PNGs on disk and never drives the browser, so it cannot conflict with this pass. Skip it for mechanical tweaks.
+The pass above only answers "does it render correctly." Two personal agents (`~/.claude/agents/`) answer the other two questions, and their remits don't overlap — on a design-meaningful change, run BOTH. Dispatch them in the same message so they work in parallel; neither repeats the functional checklist above.
+
+- **`aesthetic-critic`** — taste and craft: hierarchy, spacing rhythm, typography, distinctiveness. Point it at the SAME saved screenshots; it never drives the browser, so it cannot conflict with anything. Skip it for mechanical tweaks with no design intent.
+- **`usability-critic`** — whether a person can discover the feature, form a correct model of it, and finish the task. It drives the browser ITSELF, so dispatch it only once this pass's sub-agent has released the shared instance, and pass it the project companion's launch/auth content. Skip it when the change introduces nothing the user has to learn.
 
 ## Reporting
 
