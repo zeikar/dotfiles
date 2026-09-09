@@ -100,6 +100,24 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
   on this machine, and `rg` may exist only inside Claude Code.)
 - If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
 
+## 6. Delegate What Pays
+
+**Hand off what a sub-agent does better than you - not everything, not nothing.**
+
+Where the harness has sub-agents, hand off:
+- Fan-out reads across many files, when you want the conclusion and not the file
+  dumps in your own context.
+- Work whose intermediate output is large and whose result is small - screenshots,
+  long logs, full test runs.
+- A fresh-eyes pass on your own work; a reviewer that didn't write the code
+  critiques it harder than its author does.
+- Independent streams with no shared state - dispatch them in one message so they
+  run in parallel.
+
+Don't, when one grep answers it, when the steps depend tightly on each other, or
+when explaining the context costs more than doing the work. Never delegate and
+then also do the same work yourself.
+
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, documents that stop growing a second copy of the same rule, and clarifying questions come before implementation rather than after mistakes.
