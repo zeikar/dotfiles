@@ -94,7 +94,8 @@ dotfiles/
 │       ├── settings.json
 │       ├── statusline.sh        # custom 2-line status line (context + rate-limit gauges)
 │       ├── agents/
-│       │   └── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
+│       │   ├── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
+│       │   └── usability-critic.md   # task-scenario usability critique (drives the browser itself)
 │       └── skills/
 │           ├── hyper-autopilot/      # fire-and-forget autonomous-loop runner over hyperclaude's hyper-auto (scheduled/immediate; local, non-GitHub)
 │           ├── codex-image/          # codex image_generation skill (single/batch/parallel)
