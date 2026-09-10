@@ -39,29 +39,34 @@ Inline (no sub-agent) is acceptable only for a trivial single-element glance. Th
 
 Do NOT stop at "it renders / the flow works." Default to skepticism: **assume something is slightly off and go find it.** Zoom into edges and corners; compare selected vs unselected, this vs sibling components. Actively check:
 
-- **Affordance strength** — is the selected / active / hover / focus / disabled state genuinely OBVIOUS, or subtle/ambiguous? (A thin ring or faint tint is usually too weak.) Is it clear what's interactive and what's chosen?
+- **Affordance rendering** — is the selected / active / hover / focus / disabled state actually drawn, and distinguishable from its siblings at all? (A thin ring or faint tint often reads as no state at all.) Whether its visual weight is *right* is `aesthetic-critic`'s call; whether a user *understands* it is `usability-critic`'s.
 - **Clipping & overflow** — rings/shadows/badges clipped by `overflow`/scroll containers (esp. the first/last item in a scroll rail, and top/left edges); text truncation; content spilling out.
 - **Stacking / z-index** — modals/popovers/toasts above the navbar and other overlays; backdrops cover the full viewport (watch for elements trapped in a `transform`/`z-index` stacking context — portal them).
 - **Alignment & spacing** — misalignment, inconsistent padding/gaps, cramped or oddly-floating elements.
 - **Edge cases** — long names, empty / loading / error states, many items (does it scroll?), a single item, missing images.
 - **Dark mode** — invisible text, low contrast, wrong-on-dark colors.
 - **Responsive** — mobile width: nav collapses, grids reflow, things wrap instead of overflow, tap targets aren't tiny.
-- **Consistency** — does it match the design system and sibling components?
+- **Consistency** — does it reuse the design system's components/tokens, or reimplement them (off-scale radius, one-off button, stray hex)? Whether the resulting design *language* holds together is `aesthetic-critic`'s axis.
 
 If genuinely nothing is found, say *what was specifically inspected* — never just declare "looks good."
 
 ## Follow-up passes — aesthetic-critic and usability-critic
 
-The pass above only answers "does it render correctly." Two personal agents (`~/.claude/agents/`) answer the other two questions, and their remits don't overlap — on a design-meaningful change, run BOTH. Dispatch them in the same message so they work in parallel; neither repeats the functional checklist above.
+The pass above only answers "does it render correctly." Two personal agents (`~/.claude/agents/`) answer the other two questions — on a design-meaningful change, run BOTH. Neither repeats the functional checklist above.
 
-- **`aesthetic-critic`** — taste and craft: hierarchy, spacing rhythm, typography, distinctiveness. Point it at the SAME saved screenshots; it never drives the browser, so it cannot conflict with anything. Skip it for mechanical tweaks with no design intent.
-- **`usability-critic`** — whether a person can discover the feature, form a correct model of it, and finish the task. It drives the browser ITSELF, so dispatch it only once this pass's sub-agent has released the shared instance, and pass it the project companion's launch/auth content. Skip it when the change introduces nothing the user has to learn.
+**Keep the three questions apart.** All three passes stare at the same state affordances, so a finding filed under the wrong pass gets fixed twice or not at all. This pass asks whether a state is **rendered at all** (drawn, unclipped, legible, present on mobile); `aesthetic-critic` asks whether its **visual weight is right**; `usability-critic` asks whether a person can **tell what it means and act on it**.
+
+- **`aesthetic-critic`** — taste and craft: hierarchy, spacing rhythm, typography, distinctiveness. Give it the screenshot paths (or directory), **what changed**, and the design system / tokens to judge coherence against. It never drives the browser, so it cannot conflict with anything — but it also cannot capture what you failed to shoot: skip dark mode or a hover state and it will return that axis `NOT ASSESSED`. Skip it for mechanical tweaks with no design intent.
+- **`usability-critic`** — whether a person can discover the feature, form a correct model of it, and finish the task. Give it **what changed**, the task scenarios that matter, and the **path** to the project companion — it reads that file itself, so don't paste the contents. It drives the browser ITSELF. Skip it when the change introduces nothing the user has to learn.
+
+Dispatch both in the same message so they run in parallel — safe because only one of them touches the browser. But dispatch `usability-critic` only after this pass's sub-agent has released the shared instance, and do NOT re-dispatch this pass for a re-review while it is still running; wait for the browser to come free.
 
 ## Reporting
 
 - List the screens + viewports checked.
 - Report concrete issues with severity, or "checked X/Y/Z — clean (inspected: affordances, clipping, dark mode, mobile…)".
 - Never claim it looks fine without having Read the screenshots and run the critic checklist.
+- **When the critics ran, merge the three reports into ONE ranked list** — don't relay three documents. Attribute each finding to its pass, collapse the ones describing the same pixel from different angles, and lead with the blocking verdicts: `REWORK` (aesthetic) and `BLOCKED` (usability) outrank everything else. Carry over anything a critic marked `NOT ASSESSED` or untested — an unassessed axis is not a pass.
 - After fixing a finding, **re-screenshot and re-review** (HMR reflects edits on a running dev server).
 
 ## Onboarding a new project
