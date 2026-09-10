@@ -23,10 +23,17 @@ If not logged in, ask the user to run `codex login` once before proceeding. If `
 codex exec \
   --sandbox workspace-write \
   --skip-git-repo-check \
+  -c project_doc_max_bytes=0 \
+  -c model_reasoning_effort=low \
   --cd <work_dir> \
   -o /tmp/codex-img.md \
   "Use the image generation tool to create an image of '<prompt>'. Save it to ./<output>.png. Reply with only the file path on one line."
 ```
+
+The two `-c` overrides are what keep a job from paying for work it does not do:
+
+- **`project_doc_max_bytes=0`** — codex walks up from `--cd` and injects the enclosing repo's `AGENTS.md` and `README.md` as project context. A `work_dir` inside a repo therefore ships that repo's instructions with every image. Measured on one real run: 19,277 tokens for a single drawing, most of it a README the image tool never sees. Harmless when `work_dir` is a scratch dir outside any repo — which is what the rest of this skill assumes — and expensive the moment it is not.
+- **`model_reasoning_effort=low`** — the model's whole job is to call `image_generation` with the prompt; reasoning depth buys nothing. `low` is the default these models ship with, so this only undoes a global `~/.codex/config.toml` that raised it.
 
 Resolution is chosen by the model from the prompt and is not reliably forceable, so this tool is a poor fit when an exact size is required. Expect on the order of a minute or two per image, with wide variance.
 
@@ -65,7 +72,7 @@ Retry only the failed jobs. If a file exists only under `~/.codex/generated_imag
 ## Cost and plan notes
 
 - Each call is a full independent codex session: token use scales with N, and the ChatGPT plan's message/rate limit is consumed per job.
-- Before a heavy run, sanity-check the plan with `codex login status`.
+- **You cannot check remaining quota before a run.** `codex login status` reports authentication only — byte-identical output before and after the limit is hit. Quota shows up only when a job is refused: `codex exec` exits non-zero and its log carries `You've hit your usage limit` plus a reset time. On a heavy run, fire ONE job and read it before firing the rest.
 - Sessions persist under `~/.codex/sessions/`; add `--ephemeral` for one-off or sensitive prompts.
 
 ## Anti-patterns
@@ -81,7 +88,7 @@ Retry only the failed jobs. If a file exists only under `~/.codex/generated_imag
 | Symptom | Likely cause / action |
 |---|---|
 | 0-byte or missing PNG | Job's tool call failed — retry just that job |
-| Everything slow / serialized | Plan rate limit or network; check `codex login status` and plan tier |
+| Everything slow / serialized | Plan rate limit or network. `codex login status` will not show this — run one job and read its log |
 | "image generation tool not available" | Feature disabled — check `codex features list`, optionally `--enable image_generation` |
 | File only in `~/.codex/generated_images/` | codex didn't copy it — make the "Save to ./<file>" instruction explicit |
 | Inconsistent resolution | Expected — codex picks size from the prompt; not suitable when an exact size is required |

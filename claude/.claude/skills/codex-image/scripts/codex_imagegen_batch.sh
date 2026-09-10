@@ -75,9 +75,15 @@ run_one() {
   local idx=$1 prompt=$2 output=$3
   local tag; tag=$(printf '%03d' "$idx")
 
+  # project_doc_max_bytes=0: a work_dir inside a repo makes codex inject that
+  # repo's AGENTS.md + README into every job — thousands of irrelevant tokens
+  # per image. model_reasoning_effort=low: the model only has to call the image
+  # tool, and low is the default these models ship with anyway.
   codex exec \
     --sandbox workspace-write \
     --skip-git-repo-check \
+    -c project_doc_max_bytes=0 \
+    -c model_reasoning_effort=low \
     --cd "$work_dir" \
     -o "$log_dir/$tag.md" \
     "Use the image generation tool to create an image of '$prompt'. Save it to ./$output. Reply with only the file path on one line." \
