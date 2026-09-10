@@ -18,6 +18,11 @@ set -u -o pipefail
 
 readonly MAX_PARALLEL=5
 
+# Account-gated: a model slug your plan does not carry returns a 400, not a
+# fallback. Override when this default is not available to you.
+CODEX_IMAGE_MODEL="${CODEX_IMAGE_MODEL:-gpt-5.6-luna}"
+
+
 die() { echo "[error] $*" >&2; exit 1; }
 
 usage() {
@@ -79,11 +84,14 @@ run_one() {
   # repo's AGENTS.md + README into every job — thousands of irrelevant tokens
   # per image. model_reasoning_effort=low: the model only has to call the image
   # tool, and low is the default these models ship with anyway.
+  # Model is overridable because models are account-gated — a slug your plan does
+  # not carry comes back as a 400, not a fallback.
   codex exec \
     --sandbox workspace-write \
     --skip-git-repo-check \
     -c project_doc_max_bytes=0 \
     -c model_reasoning_effort=low \
+    -m "$CODEX_IMAGE_MODEL" \
     --cd "$work_dir" \
     -o "$log_dir/$tag.md" \
     "Use the image generation tool to create an image of '$prompt'. Save it to ./$output. Reply with only the file path on one line." \
