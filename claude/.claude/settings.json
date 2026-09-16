@@ -177,5 +177,6 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "teammateMode": "auto",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "remoteControlAtStartup": true
 }
