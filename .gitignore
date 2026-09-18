@@ -1,3 +1,5 @@
 .hyperclaude/
 .DS_Store
 *.bak
+claude/.claude/skills/synced/
+claude/.claude/skills/.trash/
