@@ -46,7 +46,6 @@ done.
 - No `find` / `grep` over `$HOME`, `/`, or other huge unscoped roots.
   Bad: `find /Users/zeikar -path '*sdk/testsuite*' -name '*.go'`
 - Locate the relevant subtree first (list one level, follow the path), then search inside it.
-- `fd` is not installed on this machine.
 - If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
 
 ## 6. Delegate What Pays
@@ -63,3 +62,10 @@ No specialized agent type needed - general-purpose works. Give a reviewer a fres
 agent so it doesn't inherit your reasoning; fork when the work needs what you
 already know, so there's nothing to brief. Keep it yourself only when the steps
 depend tightly on each other.
+
+## 7. This Machine
+
+macOS with a BSD userland, so GNU-only tools are missing:
+- No `timeout` / `gtimeout`. Use the Bash tool's own timeout; inside a script,
+  `perl -e 'alarm 20; exec @ARGV' cmd ...`.
+- No `fd`.
