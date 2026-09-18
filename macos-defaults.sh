@@ -15,9 +15,6 @@ defaults write NSGlobalDomain KeyRepeat -int 2
 # take 2 here; the older value 3 no longer turns this on.
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 
-# Always show scroll bars, so a pane with more content below is obvious.
-defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-
 # Autocorrect and smart punctuation corrupt pasted code, commands, and CLI flags.
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
