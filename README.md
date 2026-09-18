@@ -103,6 +103,8 @@ dotfiles/
 ├── codex/
 │   └── .codex/
 │       └── AGENTS.md -> ../../claude/.claude/CLAUDE.md
+├── docs/
+│   └── claude-code.md # what Claude Code writes into this repo, and what to do with it
 ├── install.sh
 ├── macos-defaults.sh
 ├── zsh/
