@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Claude Code status line — multi-line rich layout.
-#   Line 1: model·effort · dir · git branch/status · worktree · PR · cost · duration
-#   Line 2: context bar+% · rate limits (5h/7d + reset)
+#   Line 1: model·effort · context bar+% · dir · git branch/status · worktree · PR · cost · duration
+#   Line 2: Claude rate limits (5h/7d + reset)
 #   Line 3: Codex rate limits (5h/7d + reset) · reset credits — once fetched
+# Lines 2-3 share fixed-width columns so they read as one table.
 # Data arrives as JSON on stdin; see https://code.claude.com/docs/en/statusline
 # Managed via Stow in dotfiles; symlinked to ~/.claude/statusline.sh.
 
@@ -39,6 +40,9 @@ CYAN=$'\033[36m'; BLUE=$'\033[34m'; MAGENTA=$'\033[35m'
 # Drop trailing optional segments (cost/duration/PR-state) on narrow terminals.
 COLS=${COLUMNS:-120}
 WIDE=1; [ "$COLS" -lt 80 ] && WIDE=0
+
+CTX_BAR_W=10   # context bar
+RL_BAR_W=8     # rate-limit bars, narrower to keep the two-row table light
 
 # Build a usage bar of the given width from a percentage.
 make_bar() { # $1=pct $2=width
@@ -78,6 +82,12 @@ file_age() {
 # ============================ LINE 1: identity ============================
 line1="${CYAN}${B}${MODEL}${R}"
 [ -n "$EFFORT" ] && line1+="${DIM}·${EFFORT}${R}"
+
+# context (cyan; critical at 90%) sits with the model: it is session state,
+# not a rate limit
+PCT=${PCT%%.*}; [ -z "$PCT" ] && PCT=0
+line1+="  ${DIM}ctx${R} $(bar_color "$PCT" "$CYAN" 90)$(make_bar "$PCT" "$CTX_BAR_W")${R} ${PCT}%"
+
 line1+="  📁 ${DIR##*/}"
 
 # --- git (cached per-session to survive frequent refreshes) ---
@@ -125,30 +135,33 @@ if [ "$WIDE" = 1 ]; then
   line1+="  💰 ${YELLOW}$(printf '$%.2f' "${COST:-0}")${R} ${DIM}· $(fmt_dur $((DURMS/1000)))${R}"
 fi
 
-# ======================= LINE 2: usage gauges =======================
-# Uniform "label bar %" gauges, each its own hue (ctx=cyan, 5h=magenta,
-# 7d=blue); a gauge turns red past its critical threshold. Spaced, not
-# dot-separated, for a calmer line.
+# ================= LINES 2-3: rate-limit table (Claude, Codex) =================
+# One row per provider; 5h cells (magenta) and 7d cells (blue) are fixed width
+# so both rows line up in columns. A cell turns red at 80%.
 now=$(date +%s)
-GAP="   "    # 3 spaces between gauges
-BAR_W=10     # shared bar width so all gauges line up
+GAP="   "    # 3 spaces between cells
 
-# context (cyan; critical at 90%)
-PCT=${PCT%%.*}; [ -z "$PCT" ] && PCT=0
-line2="${DIM}ctx${R} $(bar_color "$PCT" "$CYAN" 90)$(make_bar "$PCT" "$BAR_W")${R} ${PCT}%"
-
-# Rate-limit gauge: critical at 80%, reset shown as a countdown.
-rate_gauge() { # $1=label $2=pct $3=reset_epoch $4=color
-  local p; p=$(printf '%.0f' "$2")
-  printf '%s' "${DIM}$1${R} $(bar_color "$p" "$4" 80)$(make_bar "$p" "$BAR_W")${R} ${p}%"
-  [ -n "$3" ] && printf '%s' " ${DIM}⟳$(fmt_dur $(($3 - now)))${R}"
+# "5h ████░░░░  40% ⟳3d1h " — always the same width; blank if the window is
+# unknown, so the 7d column stays put. fmt_dur never exceeds 6 chars here.
+rate_cell() { # $1=label $2=pct $3=reset_epoch $4=color
+  local p
+  if [ -z "$2" ]; then printf '%*s' $((RL_BAR_W + 16)) ''; return; fi
+  p=$(printf '%.0f' "$2")
+  printf '%s %s%s%s %3d%%' "${DIM}$1${R}" "$(bar_color "$p" "$4" 80)" "$(make_bar "$p" "$RL_BAR_W")" "$R" "$p"
+  if [ -n "$3" ]; then printf ' %s⟳%-6s%s' "$DIM" "$(fmt_dur $(($3 - now)))" "$R"
+  else printf '%8s' ''; fi
 }
 
-# 5-hour (magenta) and 7-day (blue) rate limits — Pro/Max only
-[ -n "$R5" ] && line2+="${GAP}$(rate_gauge 5h "$R5" "$R5RESET" "$MAGENTA")"
-[ -n "$R7" ] && line2+="${GAP}$(rate_gauge 7d "$R7" "$R7RESET" "$BLUE")"
+rate_row() { # $1=provider $2=5h_pct $3=5h_reset $4=7d_pct $5=7d_reset
+  printf '%s%-6s%s  %s%s%s' "$DIM" "$1" "$R" \
+    "$(rate_cell 5h "$2" "$3" "$MAGENTA")" "$GAP" "$(rate_cell 7d "$4" "$5" "$BLUE")"
+}
 
-# ======================= LINE 3: Codex usage =======================
+# Claude's limits arrive on stdin — Pro/Max only
+line2=""
+[ -n "$R5$R7" ] && line2=$(rate_row claude "$R5" "$R5RESET" "$R7" "$R7RESET")
+
+# --- Codex row ---
 # Read live from `codex app-server` (account/rateLimits/read, the same call
 # Orca makes). It costs ~1s over the network, so it runs in the background at
 # most every 2 minutes and this line renders from the cached result.
@@ -203,13 +216,17 @@ fi
 line3=""
 if [ -s "$CX_CACHE" ]; then
   IFS=$'\037' read -r CXAT CX5 CX5RESET CX7 CX7RESET CXCREDITS < "$CX_CACHE"
-  line3="${DIM}codex${R}"
-  [ -n "$CX5" ] && line3+="${GAP}$(rate_gauge 5h "$CX5" "$CX5RESET" "$MAGENTA")"
-  [ -n "$CX7" ] && line3+="${GAP}$(rate_gauge 7d "$CX7" "$CX7RESET" "$BLUE")"
-  [ "${CXCREDITS:-0}" -gt 0 ] && line3+="${GAP}${YELLOW}↺${CXCREDITS}${R}"
+  line3=$(rate_row codex "$CX5" "$CX5RESET" "$CX7" "$CX7RESET")
+  # Free resets only matter once a window is near its limit (the red zone).
+  near=0
+  for v in "$CX5" "$CX7"; do
+    [ -n "$v" ] && [ "$(printf '%.0f' "$v")" -ge 80 ] && near=1
+  done
+  [ "$near" = 1 ] && [ "${CXCREDITS:-0}" -gt 0 ] && line3+="${GAP}${YELLOW}↺${CXCREDITS}${R}"
   # Fetches keep failing (offline, signed out): say how old these numbers are.
   [ $((now - CXAT)) -gt 600 ] && line3+="  ${DIM}$(fmt_dur $((now - CXAT))) ago${R}"
 fi
 
-printf '%b\n%b\n' "$line1" "$line2"
+printf '%b\n' "$line1"
+if [ -n "$line2" ]; then printf '%b\n' "$line2"; fi
 if [ -n "$line3" ]; then printf '%b\n' "$line3"; fi
