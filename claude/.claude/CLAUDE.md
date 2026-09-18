@@ -53,11 +53,13 @@ done.
 
 **Hand off what a sub-agent does better than you - not everything, not nothing.**
 
-Where the harness has sub-agents, hand off:
+Hand off:
 - Work whose intermediate output is large and whose result is small - screenshots,
   long logs, full test runs.
 - A fresh-eyes pass on your own work; a reviewer that didn't write the code
   critiques it harder than its author does.
 
-Don't when the steps depend tightly on each other, or when explaining the context
-costs more than doing the work.
+No specialized agent type needed - general-purpose works. Give a reviewer a fresh
+agent so it doesn't inherit your reasoning; fork when the work needs what you
+already know, so there's nothing to brief. Keep it yourself only when the steps
+depend tightly on each other.
