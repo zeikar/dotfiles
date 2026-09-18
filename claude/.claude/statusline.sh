@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Claude Code status line — 2-line rich layout.
-#   Line 1: model·effort · dir · git branch/status · worktree · PR
-#   Line 2: context bar+% · rate limits (5h/7d + reset) · cost · duration
+# Claude Code status line — multi-line rich layout.
+#   Line 1: model·effort · dir · git branch/status · worktree · PR · cost · duration
+#   Line 2: context bar+% · rate limits (5h/7d + reset)
+#   Line 3: Codex rate limits (5h/7d + reset) · reset credits — once fetched
 # Data arrives as JSON on stdin; see https://code.claude.com/docs/en/statusline
 # Managed via Stow in dotfiles; symlinked to ~/.claude/statusline.sh.
 
@@ -67,6 +68,13 @@ fmt_dur() {
   else printf '%ds' "$s"; fi
 }
 
+# Seconds since a file was last modified; very large if it doesn't exist.
+file_age() {
+  local m
+  m=$(stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0)
+  printf '%s' $(( $(date +%s) - m ))
+}
+
 # ============================ LINE 1: identity ============================
 line1="${CYAN}${B}${MODEL}${R}"
 [ -n "$EFFORT" ] && line1+="${DIM}·${EFFORT}${R}"
@@ -74,22 +82,22 @@ line1+="  📁 ${DIR##*/}"
 
 # --- git (cached per-session to survive frequent refreshes) ---
 CACHE="${TMPDIR:-/tmp}/cc-statusline-git-${SESSION}"
-cache_stale() {
-  [ ! -f "$CACHE" ] || \
-  [ "$(( $(date +%s) - $(stat -f %m "$CACHE" 2>/dev/null || stat -c %Y "$CACHE" 2>/dev/null || echo 0) ))" -gt 3 ]
-}
-if cache_stale; then
+if [ "$(file_age "$CACHE")" -gt 3 ]; then
   if git -C "$DIR" rev-parse --git-dir >/dev/null 2>&1; then
     b=$(git -C "$DIR" branch --show-current 2>/dev/null)
+    # Detached HEAD (rebase, bisect) has no branch name; show the short SHA.
+    [ -z "$b" ] && b=$(git -C "$DIR" rev-parse --short HEAD 2>/dev/null)
     s=$(git -C "$DIR" diff --cached  --numstat 2>/dev/null | grep -c .)
     m=$(git -C "$DIR" diff          --numstat 2>/dev/null | grep -c .)
     u=$(git -C "$DIR" ls-files --others --exclude-standard 2>/dev/null | grep -c .)
-    printf '%s\t%s\t%s\t%s\n' "$b" "$s" "$m" "$u" > "$CACHE"
+    # 0x1f-separated, like the jq pass at the top: a tab IFS would shift the
+    # counts left into BRANCH whenever the branch field is empty.
+    printf '%s\037%s\037%s\037%s\n' "$b" "$s" "$m" "$u" > "$CACHE"
   else
-    printf '\t\t\t\n' > "$CACHE"
+    printf '\037\037\037\n' > "$CACHE"
   fi
 fi
-IFS=$'\t' read -r BRANCH STAGED MODIFIED UNTRACKED < "$CACHE"
+IFS=$'\037' read -r BRANCH STAGED MODIFIED UNTRACKED < "$CACHE"
 
 if [ -n "$BRANCH" ]; then
   line1+="  🌿 ${BRANCH}"
@@ -129,20 +137,79 @@ BAR_W=10     # shared bar width so all gauges line up
 PCT=${PCT%%.*}; [ -z "$PCT" ] && PCT=0
 line2="${DIM}ctx${R} $(bar_color "$PCT" "$CYAN" 90)$(make_bar "$PCT" "$BAR_W")${R} ${PCT}%"
 
-# 5-hour rate limit (magenta; critical at 80%; reset as countdown) — Pro/Max only
-if [ -n "$R5" ]; then
-  p=$(printf '%.0f' "$R5")
-  seg="${DIM}5h${R} $(bar_color "$p" "$MAGENTA" 80)$(make_bar "$p" "$BAR_W")${R} ${p}%"
-  [ -n "$R5RESET" ] && seg+=" ${DIM}⟳$(fmt_dur $((R5RESET-now)))${R}"
-  line2+="${GAP}${seg}"
+# Rate-limit gauge: critical at 80%, reset shown as a countdown.
+rate_gauge() { # $1=label $2=pct $3=reset_epoch $4=color
+  local p; p=$(printf '%.0f' "$2")
+  printf '%s' "${DIM}$1${R} $(bar_color "$p" "$4" 80)$(make_bar "$p" "$BAR_W")${R} ${p}%"
+  [ -n "$3" ] && printf '%s' " ${DIM}⟳$(fmt_dur $(($3 - now)))${R}"
+}
+
+# 5-hour (magenta) and 7-day (blue) rate limits — Pro/Max only
+[ -n "$R5" ] && line2+="${GAP}$(rate_gauge 5h "$R5" "$R5RESET" "$MAGENTA")"
+[ -n "$R7" ] && line2+="${GAP}$(rate_gauge 7d "$R7" "$R7RESET" "$BLUE")"
+
+# ======================= LINE 3: Codex usage =======================
+# Read live from `codex app-server` (account/rateLimits/read, the same call
+# Orca makes). It costs ~1s over the network, so it runs in the background at
+# most every 2 minutes and this line renders from the cached result.
+CX_CACHE="${TMPDIR:-/tmp}/cc-statusline-codex"
+CX_TTL=120
+
+# Prints "5h% 5h_reset 7d% 7d_reset reset_credits", or nothing. Fields are
+# 0x1f-separated for the same reason as the jq pass at the top: `primary`
+# can be null, and a tab IFS would shift the 7d numbers into the 5h slots.
+codex_fetch() {
+  local out; out=$(mktemp) || return
+  # app-server exits on stdin EOF, so hold stdin open until the reply lands.
+  # macOS has no `timeout`. `codex` is a Node wrapper that forwards TERM (not
+  # ALRM) to the native server, so perl sends TERM once the alarm fires.
+  # shellcheck disable=SC2094 # polling the reply file is the point
+  { printf '%s\n' \
+      '{"jsonrpc":"2.0","id":0,"method":"initialize","params":{"clientInfo":{"name":"statusline","version":"0"}}}' \
+      '{"jsonrpc":"2.0","method":"initialized"}' \
+      '{"jsonrpc":"2.0","id":1,"method":"account/rateLimits/read"}'
+    for _ in $(seq 40); do grep -q '"id":1,' "$out" && break; sleep 0.5; done
+  } | perl -e 'defined($p = fork) or die; exec @ARGV unless $p;
+               $SIG{ALRM} = sub { kill TERM => $p }; alarm 25; waitpid $p, 0' \
+      codex -c approval_policy=never -s read-only -a never app-server >"$out" 2>/dev/null
+  jq -r 'select(.id == 1 and .result != null) | .result
+    | (.rateLimitsByLimitId.codex // .rateLimits) as $l
+    | select($l.primary != null or $l.secondary != null)
+    | [ ($l.primary.usedPercent // ""),   ($l.primary.resetsAt // ""),
+        ($l.secondary.usedPercent // ""), ($l.secondary.resetsAt // ""),
+        (.rateLimitResetCredits.availableCount // 0) ]
+    | map(tostring) | join("")' "$out" 2>/dev/null
+  rm -f "$out"
+}
+
+if [ "$(file_age "$CX_CACHE")" -ge "$CX_TTL" ] && command -v codex >/dev/null; then
+  CX_LOCK="$CX_CACHE.lock"
+  [ "$(file_age "$CX_LOCK")" -gt 60 ] && rmdir "$CX_LOCK" 2>/dev/null
+  if mkdir "$CX_LOCK" 2>/dev/null; then
+    # On failure keep the last result but touch it, so an offline machine
+    # retries every CX_TTL rather than on every refresh.
+    # The temp name is unique because a lock broken as stale (e.g. across
+    # sleep) can leave two fetches racing to the same rename.
+    ( row=$(codex_fetch)
+      if [ -n "$row" ] && tmp=$(mktemp "$CX_CACHE.XXXXXX"); then
+        printf '%s\037%s\n' "$(date +%s)" "$row" > "$tmp" && mv "$tmp" "$CX_CACHE"
+      else
+        touch "$CX_CACHE"
+      fi
+      rmdir "$CX_LOCK" ) </dev/null >/dev/null 2>&1 &
+  fi
 fi
 
-# 7-day rate limit (blue; critical at 80%; reset as countdown)
-if [ -n "$R7" ]; then
-  p=$(printf '%.0f' "$R7")
-  seg="${DIM}7d${R} $(bar_color "$p" "$BLUE" 80)$(make_bar "$p" "$BAR_W")${R} ${p}%"
-  [ -n "$R7RESET" ] && seg+=" ${DIM}⟳$(fmt_dur $((R7RESET-now)))${R}"
-  line2+="${GAP}${seg}"
+line3=""
+if [ -s "$CX_CACHE" ]; then
+  IFS=$'\037' read -r CXAT CX5 CX5RESET CX7 CX7RESET CXCREDITS < "$CX_CACHE"
+  line3="${DIM}codex${R}"
+  [ -n "$CX5" ] && line3+="${GAP}$(rate_gauge 5h "$CX5" "$CX5RESET" "$MAGENTA")"
+  [ -n "$CX7" ] && line3+="${GAP}$(rate_gauge 7d "$CX7" "$CX7RESET" "$BLUE")"
+  [ "${CXCREDITS:-0}" -gt 0 ] && line3+="${GAP}${YELLOW}↺${CXCREDITS}${R}"
+  # Fetches keep failing (offline, signed out): say how old these numbers are.
+  [ $((now - CXAT)) -gt 600 ] && line3+="  ${DIM}$(fmt_dur $((now - CXAT))) ago${R}"
 fi
 
 printf '%b\n%b\n' "$line1" "$line2"
+if [ -n "$line3" ]; then printf '%b\n' "$line3"; fi
