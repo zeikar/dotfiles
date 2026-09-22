@@ -7,7 +7,7 @@ zsh, Brewfile, and macOS defaults.
 ## What is tracked
 
 - `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `statusline.sh`, `skills/`, `agents/`)
-- `codex/` for Codex CLI configuration (`AGENTS.md` — `CLAUDE.md` minus its sub-agent delegation section)
+- `codex/` for Codex CLI configuration (`AGENTS.md` — the shared global guidelines, which Claude's `CLAUDE.md` imports)
 - `zsh/` for shell configuration
 - `Brewfile` for package reproducibility
 - `macos-defaults.sh` for common macOS preferences
@@ -90,7 +90,7 @@ dotfiles/
 ├── LICENSE
 ├── claude/
 │   └── .claude/
-│       ├── CLAUDE.md
+│       ├── CLAUDE.md            # imports ~/.codex/AGENTS.md + Claude-only delegation section
 │       ├── settings.json
 │       ├── statusline.sh        # custom 2-line status line (context + rate-limit gauges)
 │       ├── agents/
@@ -102,7 +102,7 @@ dotfiles/
 │           └── visual-review/        # Playwright MCP rendering critique (reads per-repo visual-review-app companion)
 ├── codex/
 │   └── .codex/
-│       └── AGENTS.md  # CLAUDE.md minus §6 (delegation); kept in sync by hand
+│       └── AGENTS.md  # shared global guidelines (Codex reads it directly, Claude imports it)
 ├── docs/
 │   └── claude-code.md # what Claude Code writes into this repo, and what to do with it
 ├── install.sh
