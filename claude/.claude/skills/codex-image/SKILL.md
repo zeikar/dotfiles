@@ -24,7 +24,7 @@ codex exec \
   --sandbox workspace-write \
   --skip-git-repo-check \
   -c project_doc_max_bytes=0 \
-  -c model_reasoning_effort=low \
+  -c model_reasoning_effort=medium \
   -m gpt-6-luna \
   --cd <work_dir> \
   -o /tmp/codex-img.md \
@@ -34,7 +34,7 @@ codex exec \
 These overrides are what keep a job from paying for work it does not do:
 
 - **`project_doc_max_bytes=0`** — codex walks up from `--cd` and injects the enclosing repo's `AGENTS.md` and `README.md` as project context. A `work_dir` inside a repo therefore ships that repo's instructions with every image. Measured on one real run: 19,277 tokens for a single drawing, most of it a README the image tool never sees. Harmless when `work_dir` is a scratch dir outside any repo — which is what the rest of this skill assumes — and expensive the moment it is not.
-- **`model_reasoning_effort=low`** — the model's whole job is to call `image_generation` with the prompt; reasoning depth buys nothing. `gpt-6-luna` ships with `medium`, and a global `~/.codex/config.toml` may raise it further.
+- **`model_reasoning_effort=medium`** — `gpt-6-luna`'s shipped default, pinned so a global `~/.codex/config.toml` that raised effort doesn't carry into image jobs.
 - **`-m gpt-6-luna`** — the cheap fast model is enough to call the tool; without `-m` the job runs on whatever model `~/.codex/config.toml` names. Models are account-gated: a slug the plan does not carry returns a 400, not a fallback.
 
 Resolution is chosen by the model from the prompt and is not reliably forceable, so this tool is a poor fit when an exact size is required. Expect on the order of a minute or two per image, with wide variance.

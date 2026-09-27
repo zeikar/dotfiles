@@ -82,15 +82,15 @@ run_one() {
 
   # project_doc_max_bytes=0: a work_dir inside a repo makes codex inject that
   # repo's AGENTS.md + README into every job — thousands of irrelevant tokens
-  # per image. model_reasoning_effort=low: the model only has to call the image
-  # tool, and the model ships with medium.
+  # per image. model_reasoning_effort=medium: the model's shipped default, pinned
+  # so a global config that raised effort doesn't carry into image jobs.
   # Model is overridable because models are account-gated — a slug your plan does
   # not carry comes back as a 400, not a fallback.
   codex exec \
     --sandbox workspace-write \
     --skip-git-repo-check \
     -c project_doc_max_bytes=0 \
-    -c model_reasoning_effort=low \
+    -c model_reasoning_effort=medium \
     -m "$CODEX_IMAGE_MODEL" \
     --cd "$work_dir" \
     -o "$log_dir/$tag.md" \
