@@ -20,7 +20,7 @@ readonly MAX_PARALLEL=5
 
 # Account-gated: a model slug your plan does not carry returns a 400, not a
 # fallback. Override when this default is not available to you.
-CODEX_IMAGE_MODEL="${CODEX_IMAGE_MODEL:-gpt-5.6-luna}"
+CODEX_IMAGE_MODEL="${CODEX_IMAGE_MODEL:-gpt-6-luna}"
 
 
 die() { echo "[error] $*" >&2; exit 1; }
@@ -83,7 +83,7 @@ run_one() {
   # project_doc_max_bytes=0: a work_dir inside a repo makes codex inject that
   # repo's AGENTS.md + README into every job — thousands of irrelevant tokens
   # per image. model_reasoning_effort=low: the model only has to call the image
-  # tool, and low is the default these models ship with anyway.
+  # tool, and the model ships with medium.
   # Model is overridable because models are account-gated — a slug your plan does
   # not carry comes back as a 400, not a fallback.
   codex exec \
