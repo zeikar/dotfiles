@@ -99,7 +99,7 @@ dotfiles/
 │       └── skills/
 │           ├── hyper-autopilot/      # fire-and-forget autonomous-loop runner over hyperclaude's hyper-auto (scheduled/immediate; local, non-GitHub)
 │           ├── codex-image/          # codex image_generation skill (single/batch/parallel)
-│           ├── korean-polish/        # polishes Korean the user posts so it reads human (rules.md; projects add their own)
+│           ├── korean-polish/        # writes and polishes Korean the user posts so it reads human (rules.md; projects add their own)
 │           └── visual-review/        # Playwright MCP rendering critique (reads per-repo visual-review-app companion)
 ├── codex/
 │   └── .codex/

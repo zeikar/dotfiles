@@ -1,6 +1,6 @@
 # Survey of Korean polishing rule sets (2026-09-28)
 
-What `rules.md`'s undated rules were picked from. The survey was done by a research
+What `rules.md`'s survey-based rules were picked from. The survey was done by a research
 agent (web search and fetch) for polishing YouTube comment replies in
 해요체. Read this before adding a rule: a candidate may already be here,
 with its evidence or its problems.
