@@ -1,6 +1,6 @@
 ---
 name: visual-review
-description: This skill should be used after UI-affecting changes to visually verify rendering — when the user asks to "visually check", "review how it looks", "see how the screen looks", "check the UI", or after building/modifying components, modals, layout, responsive, or dark-mode behavior. Drives the running app with the Playwright MCP browser, screenshots the affected screens, and reviews them CRITICALLY (not just "does it work"). Agent-driven review, NOT committed visual-regression tests. Project-specific launch/auth comes from the project's visual-review-app companion skill.
+description: This skill should be used after UI-affecting changes to visually verify rendering — when the user asks to see or check how the UI looks, or after building/modifying components, modals, layout, responsive, or dark-mode behavior. Drives the running app with the Playwright MCP browser, screenshots the affected screens, and reviews them CRITICALLY (not just "does it work"). Agent-driven review, NOT committed visual-regression tests. Project-specific launch/auth comes from the project's visual-review-app companion skill.
 ---
 
 # Visual review
@@ -20,7 +20,7 @@ Functional tests assert behavior; they do NOT catch rendering problems — weak 
 
 ## Execution model — delegate to a sub-agent (default)
 
-Dispatch a sub-agent (Agent tool, `general-purpose`, **`run_in_background: false`** — the findings are consumed inline) to perform the review and report back a concise findings list. Do NOT drive the browser inline in the main thread:
+Dispatch a sub-agent (Agent tool, `general-purpose`) to perform the review and report back a concise findings list, and wait for its report before fixing anything. Do NOT drive the browser inline in the main thread:
 
 - **Context hygiene** — screenshots are large (~1MB each); the sub-agent absorbs the image tokens and returns only text.
 - **Less self-bias** — a fresh reviewer that did NOT write the code critiques harder than the implementer reviewing its own work (the whole point: catch the subtle stuff).
@@ -37,7 +37,7 @@ Inline (no sub-agent) is acceptable only for a trivial single-element glance. Th
 
 ## Critic mode (the important part)
 
-Do NOT stop at "it renders / the flow works." Default to skepticism: **assume something is slightly off and go find it.** Zoom into edges and corners; compare selected vs unselected, this vs sibling components. Actively check:
+"It renders / the flow works" is where this pass starts, not where it ends — inspect like a harsh designer. Zoom into edges and corners; compare selected vs unselected, this vs sibling components. Actively check:
 
 - **Affordance rendering** — is the selected / active / hover / focus / disabled state actually drawn, and distinguishable from its siblings at all? (A thin ring or faint tint often reads as no state at all.) Whether its visual weight is *right* is `aesthetic-critic`'s call; whether a user *understands* it is `usability-critic`'s.
 - **Clipping & overflow** — rings/shadows/badges clipped by `overflow`/scroll containers (esp. the first/last item in a scroll rail, and top/left edges); text truncation; content spilling out.
