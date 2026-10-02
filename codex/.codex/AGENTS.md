@@ -27,6 +27,9 @@ overlaps something that already exists - a code path doing the same job, a doc
 sentence it makes stale - update that thing rather than adding a second copy
 beside it.
 
+New code that is its own concern goes in its own file rather than pushing an
+existing one past ~500 lines. Don't split a large file unasked - mention it.
+
 ## 4. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
