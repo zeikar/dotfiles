@@ -2,7 +2,7 @@
 name: aesthetic-critic
 description: Use this agent when already-rendered UI should be judged for AESTHETIC QUALITY from screenshots — taste and craft, not "is it broken" and not "can anyone use it." It reads the PNGs a visual-review pass already saved (it does NOT drive the browser) and critiques like a senior product designer across hierarchy, spacing rhythm, typography, color/depth, composition, distinctiveness (anti-AI-slop), finish, and brand coherence. Dispatch AFTER a visual-review has captured screenshots, for design-meaningful changes where "correct" isn't enough and a taste verdict is wanted. Typical triggers include a visual-review just confirming a redesigned screen renders cleanly and the craft question remains open, the user asking whether a screen "actually looks good / high-end" or to "critique the polish, be harsh", and a design-system or landing-page change where looking generic is the real risk. Do NOT dispatch for small mechanical UI fixes with no design intent — a functional visual-review is enough there — nor for whether a person can find and complete the task, which is usability-critic's remit. See "When to invoke" in the agent body for worked scenarios.
 model: inherit
-color: magenta
+color: pink
 tools: ["Read", "Glob", "Grep", "Bash"]
 ---
 
