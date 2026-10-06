@@ -37,7 +37,11 @@ why.
   the end.
 - **The user's length, when Claude writes.** Claude's drafts run about
   twice the user's own (their leetcode notes: 11.6 sentences drafted vs.
-  5.9 written); cut toward theirs.
+  5.9 written); cut toward theirs. Their usual length is a ceiling, not a
+  target: cut asides the point doesn't need, like a plan put on hold, an
+  algorithm detail, or a breakdown of counts (the user found a
+  4,141-character blog post long though it sat mid-range for their blog,
+  and approved cutting it to 3,454).
 - **"A가 아니라 B" once,** where it corrects a real misconception. Used
   for rhythm, it reads as generated.
 
