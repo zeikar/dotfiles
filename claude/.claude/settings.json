@@ -194,5 +194,6 @@
   "teammateMode": "auto",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "idleCompaction": false
+  "idleCompaction": false,
+  "feedbackSurveyRate": 0
 }
