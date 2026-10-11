@@ -13,9 +13,11 @@ why.
 
 ## All text
 
-- **No 번역투:** not ~를 통해, ~에 의해, ~에 있어, 가지고 있다, ~되어지다;
-  not "거의 정확히 X와 같다" (say "X와 거의 같다"); not ~할 때 meaning
-  "each time" or "while" (say ~마다, ~동안).
+- **No 번역투:** not ~를 통해, ~에 의해, ~에 있어, 가지고 있다, double
+  passives (~되어지다, 쓰여진 → 쓰인); not "거의 정확히 X와 같다" (say "X와
+  거의 같다"); not ~할 때 meaning "each time" or "while" (say ~마다,
+  ~동안); not an English passive kept as is: "0과 1로만 쓰이는 수"
+  ("written with only 0s and 1s") → "0과 1로만 이루어진 수" (the user).
 - **Say what 그 points to.** "그 힘", "이것", "그 효과" name their thing
   when two could be meant: after the Sun's tides and gravity, "그 힘이
   달의 절반" reads as the Sun's pull, so say "밀물, 썰물을 만드는 힘은".
