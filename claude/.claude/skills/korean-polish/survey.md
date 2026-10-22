@@ -108,7 +108,7 @@ they strip breathing commas and "A가 아니라 B".
 ## Conflicts and overreach
 
 1. **Turning hedges into assertions** (DS #33 "자동화할 수 있다" → "자동화한다", DS #40). INA, KO, and HK #19 forbid it. After INA applied a similar rewrite to 55 eye-clinic posts, 40 had to be rolled back. Keep every hedge in science writing.
-2. **Mixing 합니다 and 해요 for rhythm.** DS #24 recommends it; HK, YM, and INA E-7 forbid mixed levels. KZ says a mix alone isn't a tell, and SOUL mixes 합니다 set phrases into 해요 replies. The user confirmed that their own typing mixes like this (see `rules.md` → Replies).
+2. **Mixing 합니다 and 해요 for rhythm.** DS #24 recommends it; HK, YM, and INA E-7 forbid mixed levels. KZ says a mix alone isn't a tell, and SOUL mixes 합니다 set phrases into 해요 replies. The user's own replies mix the two freely, beyond set phrases, and an all-해요 reply reads to them like a blog post (see `rules.md` → Replies).
 3. **Planting spacing errors** (DS #8/#9). HK and SOUL reject it; it's wrong for anyone posting publicly.
 4. **Emoji and ㅋㅋ point opposite ways by genre.** In prose, decoration reads as AI (INA C-5); in short comments, its absence does (XDAC). The user's call for their own replies: no decoration (see `rules.md` → Typed text).
 5. **Short sentences.** KO and DS #4 favor splitting; INA E-4 and KZ #31 call a run of short sentences an AI signature. HK says don't shorten across the board.

@@ -36,9 +36,9 @@ project wins.
    whether it reads as generated. When Claude wrote the text in this
    conversation, spawn a general-purpose agent with only the text, what it
    answers, `rules.md`, and the project's rules (no conversation, no
-   `survey.md`), and ask which lines read as machine-written and why. Keep
-   what holds up against the rules. For a pasted draft, you are the fresh
-   eyes.
+   `survey.md` or `corrections.md`), and ask which lines read as
+   machine-written and why. Keep what holds up against the rules. For a
+   pasted draft, you are the fresh eyes.
 5. **Report, in Korean.** The text in a quote block, ready to paste (if it
    went into a file, name the file instead); then each change with its
    reason, one line each (for text Claude wrote, what the fresh-eyes pass
@@ -46,12 +46,16 @@ project wins.
    with how it was checked. Nothing else.
 6. **Grow the rules.** Learn only from the user's explicit corrections:
    they rewrite or reject Claude's wording, or state a preference. Never
-   learn from a pasted draft; it may come from another AI. Record each
-   correction with its before and after, marked "(the user …)" like the
-   existing ones, no date. If a rule already covers it, add the example to
-   that rule instead of writing a new one. Tell the user where it went: a rule about one project (its register, its
-   sources) goes in that project's rules; anything else goes in `rules.md`
-   (check `survey.md` first, which may already have its evidence). This
+   learn from a pasted draft; it may come from another AI. Log each
+   correction in `corrections.md`, led by the rule it bears on, with its
+   before and after, no date. Then change `rules.md` only as far as the
+   correction calls for: one that contradicts a rule rewrites or deletes
+   that rule, never adds an exception to it; one no rule covers adds a
+   rule of a line or two with at most one example; one a rule already
+   covers leaves `rules.md` alone. Tell the user where it went: a rule
+   about one project (its register, its sources) goes in that project's
+   rules; anything else goes in `rules.md` (check `survey.md` and
+   `corrections.md` first, which may already have its evidence). This
    skill lives in the dotfiles repo
    (`~/Developer/Projects/dotfiles/claude/.claude/skills/korean-polish/`);
    edit it there.
