@@ -154,3 +154,8 @@ if [ -f "$HOME/.openclaw/completions/openclaw.zsh" ]; then
 fi
 
 export PATH
+
+# Unity CLI
+if [ -f "$HOME/.unity/env" ]; then
+    source "$HOME/.unity/env"
+fi
