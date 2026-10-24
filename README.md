@@ -9,6 +9,7 @@ zsh, Brewfile, and macOS defaults.
 - `claude/` for Claude Code global configuration (`CLAUDE.md`, `settings.json`, `statusline.sh`, `skills/`, `agents/`)
 - `codex/` for Codex CLI configuration (`AGENTS.md` — the shared global guidelines, which Claude's `CLAUDE.md` imports)
 - `zsh/` for shell configuration
+- `git/` for the global git config (`.gitconfig`)
 - `Brewfile` for package reproducibility
 - `macos-defaults.sh` for common macOS preferences
 
@@ -105,6 +106,8 @@ dotfiles/
 │       └── AGENTS.md  # shared global guidelines (Codex reads it directly, Claude imports it)
 ├── docs/
 │   └── claude-code.md # what Claude Code writes into this repo, and what to do with it
+├── git/
+│   └── .gitconfig
 ├── install.sh
 ├── macos-defaults.sh
 ├── zsh/
