@@ -182,19 +182,19 @@
       "autoUpdate": true
     }
   },
-  "effortLevel": "xhigh",
+  "feedbackSurveyRate": 0,
+  "effortLevel": "high",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "high"
     }
   },
   "tui": "fullscreen",
   "showThinkingSummaries": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
+  "idleCompaction": false,
   "teammateMode": "auto",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true,
-  "idleCompaction": false,
-  "feedbackSurveyRate": 0
+  "agentPushNotifEnabled": true
 }
