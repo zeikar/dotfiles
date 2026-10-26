@@ -24,6 +24,9 @@ when applying the rules.
 - **Only the numbers the point stands on.** The user cut "태양은 달보다
   2700만 배 무거워도 390배나 멀어서" to "태양은 달보다 멀어서" and kept
   절반쯤, 1.8ms, and 500억 년.
+- **No requests to the reader in -다 prose.** Closing a 해라체 blog post,
+  the user found "이슈로 남겨 주면 큰 도움이 된다" awkward and "이슈로 알려
+  주면 고맙겠다" like 반말; it became "버그 제보는 이슈로 받고 있다".
 - **Name the thing people know.** The user added "(사리, 조금)" after
   "밀물, 썰물".
 

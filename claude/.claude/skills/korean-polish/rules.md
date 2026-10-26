@@ -56,6 +56,8 @@ a person. Sounding human comes from cutting, not from decoration.
   무거워도 390배나 멀어서" → "태양은 달보다 멀어서".
 - **Name the thing people know.** "밀물, 썰물(사리, 조금)" lands faster than
   the mechanism alone. In a pasted draft, suggest it rather than adding it.
+- **No requests to the reader in -다 prose.** In a 해라체 post, "알려 주면
+  고맙겠다" reads as 반말; state it instead: "버그 제보는 이슈로 받고 있다".
 - **Not too tidy.** Paragraphs that all run claim then reason, each opened
   by 그런데, 그래서, 대신; bold labels; colon headings; lists of three. Loosen
   the one that stands out instead of rewriting for rhythm.
