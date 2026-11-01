@@ -196,5 +196,6 @@
   "idleCompaction": false,
   "teammateMode": "auto",
   "remoteControlAtStartup": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "syncClaudeAiPlugins": false
 }
