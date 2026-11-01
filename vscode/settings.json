@@ -86,5 +86,6 @@
   "update.showReleaseNotes": false,
   "claudeCode.preferredLocation": "panel",
   "claudeCode.allowDangerouslySkipPermissions": true,
+  "claudeCode.initialPermissionMode": "bypassPermissions",
   "claudeCode.environmentVariables": []
 }
