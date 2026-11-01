@@ -148,11 +148,6 @@ if [ -f ~/.zshrc.local ]; then
     source ~/.zshrc.local
 fi
 
-# OpenClaw Completion
-if [ -f "$HOME/.openclaw/completions/openclaw.zsh" ]; then
-    source "$HOME/.openclaw/completions/openclaw.zsh"
-fi
-
 export PATH
 
 # Unity CLI
