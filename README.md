@@ -10,6 +10,8 @@ zsh, Brewfile, and macOS defaults.
 - `codex/` for Codex CLI configuration (`AGENTS.md` — the shared global guidelines, which Claude's `CLAUDE.md` imports)
 - `zsh/` for shell configuration
 - `git/` for the global git config (`.gitconfig`)
+- `vscode/` keeps the last VS Code (Stable and Insiders) settings for reference; VS Code is
+  uninstalled and `install.sh` doesn't stow it
 - `Brewfile` for package reproducibility
 - `macos-defaults.sh` for common macOS preferences
 
@@ -104,6 +106,9 @@ dotfiles/
 │   └── .gitconfig
 ├── install.sh
 ├── macos-defaults.sh
+├── vscode/            # archived VS Code settings (not stowed)
+│   ├── insiders/settings.json
+│   └── stable/        # settings.json, keybindings.json
 ├── zsh/
 │   ├── .zshrc
 │   └── .zshrc.local.example
