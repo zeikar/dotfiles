@@ -143,9 +143,16 @@ GAP="   "    # 3 spaces between cells
 
 # "5h ████░░░░  40% ⟳3d1h " — always the same width; blank if the window is
 # unknown, so the 7d column stays put. fmt_dur never exceeds 6 chars here.
-rate_cell() { # $1=label $2=pct $3=reset_epoch $4=color
+rate_cell() { # $1=label $2=pct|inf $3=reset_epoch $4=color
   local p
   if [ -z "$2" ]; then printf '%*s' $((RL_BAR_W + 16)) ''; return; fi
+  # No limit: an empty bar, ∞ for the percent, and ⟳— for a reset that
+  # never comes. Padded by hand: ∞ and — are multibyte, and printf widths
+  # count bytes.
+  if [ "$2" = inf ]; then
+    printf '%s %s%s%s    %s∞%s %s⟳—     %s' "${DIM}$1${R}" "$4" "$(make_bar 0 "$RL_BAR_W")" "$R" "$4" "$R" "$DIM" "$R"
+    return
+  fi
   p=$(printf '%.0f' "$2")
   printf '%s %s%s%s %3d%%' "${DIM}$1${R}" "$(bar_color "$p" "$4" 80)" "$(make_bar "$p" "$RL_BAR_W")" "$R" "$p"
   if [ -n "$3" ]; then printf ' %s⟳%-6s%s' "$DIM" "$(fmt_dur $(($3 - now)))" "$R"
@@ -157,7 +164,17 @@ rate_row() { # $1=provider $2=5h_pct $3=5h_reset $4=7d_pct $5=7d_reset
     "$(rate_cell 5h "$2" "$3" "$MAGENTA")" "$GAP" "$(rate_cell 7d "$4" "$5" "$BLUE")"
 }
 
-# Claude's limits arrive on stdin — Pro/Max only
+# Claude's limits arrive on stdin — Pro/Max/Ultra only. Verified Ultra
+# accounts have no 5h limit, so stdin carries seven_day without five_hour.
+# Pro/Max drop five_hour too once its window lapses mid-session, and the
+# account profile can't tell Ultra apart (it reads claude_max). So show ∞
+# only when no session on this machine has seen a 5h window for a day.
+C5_SEEN="${TMPDIR:-/tmp}/cc-statusline-claude-5h-seen"
+if [ -n "$R5" ]; then
+  touch "$C5_SEEN"
+elif [ -n "$R7" ] && [ "$(file_age "$C5_SEEN")" -gt 86400 ]; then
+  R5=inf
+fi
 line2=""
 [ -n "$R5$R7" ] && line2=$(rate_row claude "$R5" "$R5RESET" "$R7" "$R7RESET")
 
