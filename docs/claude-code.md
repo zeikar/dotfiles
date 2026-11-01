@@ -6,8 +6,7 @@ some Claude Code actions show up here as diffs. What to do with each:
 ## `"model"` in settings.json
 
 `/model` writes the chosen model into `claude/.claude/settings.json`. The model is
-deliberately unpinned (6e7ba48): drop that key rather than commit it, even when the
-same diff also carries orca's hook rewrite, which you do commit.
+deliberately unpinned (6e7ba48): drop that key rather than commit it.
 
 ## Plugin commands run from `~`
 

@@ -19,9 +19,6 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
   lands inside this repo as an untracked file; review it, then commit or delete.
   (Shape depends on the target: Stow folds per-subdir instead when the `$HOME`
   dir already exists as a real dir.)
-- `claude/.claude/settings.json` carries orca IDE agent-hooks. orca rewrites them
-  through the stow symlink on every launch, so a large unrequested diff there is
-  expected — commit it rather than trimming it back.
 - Claude Code itself also writes into this repo (`/model`, `claude plugin` run
   from `~`, claude.ai skill sync). Read `docs/claude-code.md` before running
   `claude plugin` from `~` or committing a diff Claude Code made.

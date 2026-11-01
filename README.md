@@ -76,12 +76,6 @@ export GITHUB_TOKEN="your_token_here"
 export OPENAI_API_KEY="your_key_here"
 ```
 
-## Claude Code + orca IDE
-
-`claude/.claude/settings.json` carries agent-hooks for the [orca IDE](https://www.onorca.dev/),
-installed separately (not by this repo). Each hook is guarded with `-f/-r/-x`, so it no-ops
-where orca is absent. orca regenerates them on every launch, so expect that file to churn.
-
 ## Structure
 
 ```text
