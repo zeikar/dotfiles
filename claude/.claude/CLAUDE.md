@@ -8,8 +8,8 @@ Hand off:
 - Work whose intermediate output is large and whose result is small - screenshots,
   long logs, full test runs, reading many files to answer one question.
 - Review: before reporting a code change done, spawn a fresh general-purpose
-  agent to critique the diff. Skip only for a typo, a comment, or a single
-  config value. hyper-* loops already review - don't add a second pass there.
+  agent to critique the diff, including any README/docs the diff makes stale.
+  Skip only for a typo, a comment, or a single config value. hyper-* loops already review - don't add a second pass there.
 - UI design: when the change makes visual decisions - a new screen or section,
   or reshaping an existing one's layout, hierarchy, or color - generate 1-2
   mockups with codex-image first, then build with frontend-design using them as

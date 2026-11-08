@@ -27,7 +27,9 @@
 
 For a bug, reproduce it first - with a failing test where one fits - and watch the
 fix make it pass. Otherwise run whatever proves the change works before calling it
-done.
+done. Done includes docs: if the change touched anything documented - API, CLI
+flags, config, setup steps, architecture - grep README and docs/ for it and fix
+what went stale.
 
 ## 4. Efficient Search
 
