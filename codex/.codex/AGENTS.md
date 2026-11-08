@@ -2,8 +2,8 @@
 
 **Don't hide confusion. Surface tradeoffs.**
 
-- Read AGENTS.md and the docs that project instruction files link to before
-  touching code. Don't reinvent existing conventions.
+- Read the docs a project instruction file links to before touching code -
+  only `@` imports load automatically. Don't reinvent existing conventions.
 - Ask before changing behavior, security, or a public API in ways the request
   didn't spell out.
 - If a simpler approach exists, say so. Push back when warranted.
@@ -40,7 +40,5 @@ done.
 
 ## 5. This Machine
 
-macOS with a BSD userland, so GNU-only tools are missing:
-- No `timeout` / `gtimeout`. Use the Bash tool's own timeout; inside a script,
-  `perl -e 'alarm 20; exec @ARGV' cmd ...`.
-- No `fd`.
+macOS with a BSD userland, so GNU-only tools are missing - no `fd`, no
+`sed -i` without a suffix argument. `timeout` exists (BSD, /usr/bin).

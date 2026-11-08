@@ -16,7 +16,7 @@ Hand off:
   reference, not spec. Skip when the look is already decided and you're only
   adjusting within it (spacing, a label, reusing an existing component).
 
-No specialized agent type needed - general-purpose works. Give a reviewer a fresh
-agent so it doesn't inherit your reasoning; fork when the work needs what you
+A reviewer needs no special agent type - general-purpose is enough. Give it a
+fresh agent so it doesn't inherit your reasoning; fork when the work needs what you
 already know, so there's nothing to brief. Keep it yourself only when the steps
 depend tightly on each other.
