@@ -10,6 +10,7 @@
 #
 # Usage:
 #   codex_imagegen_batch.sh <work_dir> "<prompt>::<out.png>" ["<prompt>::<out.png>" ...]
+#   CODEX_IMAGE_REF=<file>   optional reference image attached to every job
 #
 # Outputs land in <work_dir>/. Per-job codex transcripts and stdout are kept
 # in <work_dir>/.codex-imagegen-logs/.
@@ -21,6 +22,10 @@ readonly MAX_PARALLEL=5
 # Account-gated: a model slug your plan does not carry returns a 400, not a
 # fallback. Override when this default is not available to you.
 CODEX_IMAGE_MODEL="${CODEX_IMAGE_MODEL:-gpt-6-luna}"
+
+# Optional reference image for every job (the A/B mockup case: each variant
+# starts from the same current-screen screenshot).
+CODEX_IMAGE_REF="${CODEX_IMAGE_REF:-}"
 
 
 die() { echo "[error] $*" >&2; exit 1; }
@@ -51,6 +56,7 @@ mkdir -p "$log_dir"
 
 command -v codex >/dev/null 2>&1 || die "codex CLI not found in PATH"
 codex login status >/dev/null 2>&1 || die "codex not logged in — run: codex login"
+[ -z "$CODEX_IMAGE_REF" ] || [ -f "$CODEX_IMAGE_REF" ] || die "CODEX_IMAGE_REF not found: $CODEX_IMAGE_REF"
 
 # Parse "<prompt>::<output>" items, rejecting malformed or duplicate outputs.
 prompts=() outputs=()
@@ -86,16 +92,21 @@ run_one() {
   # so a global config that raised effort doesn't carry into image jobs.
   # Model is overridable because models are account-gated — a slug your plan does
   # not carry comes back as a 400, not a fallback.
+  # </dev/null: with stdin open and not a tty, codex waits on "Reading
+  # additional input from stdin..." forever and never requests the image.
+  local ref_args=()
+  [ -n "$CODEX_IMAGE_REF" ] && ref_args=(-i "$CODEX_IMAGE_REF")
   codex exec \
     --sandbox workspace-write \
     --skip-git-repo-check \
     -c project_doc_max_bytes=0 \
     -c model_reasoning_effort=medium \
     -m "$CODEX_IMAGE_MODEL" \
+    ${ref_args[@]+"${ref_args[@]}"} \
     --cd "$work_dir" \
     -o "$log_dir/$tag.md" \
     "Use the image generation tool to create an image of '$prompt'. Save it to ./$output. Reply with only the file path on one line." \
-    >"$log_dir/$tag.stdout" 2>&1
+    </dev/null >"$log_dir/$tag.stdout" 2>&1
   local rc=$?
 
   if [ $rc -eq 0 ] && [ -s "$work_dir/$output" ]; then

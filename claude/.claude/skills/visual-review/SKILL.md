@@ -25,7 +25,7 @@ Dispatch a sub-agent (Agent tool, `general-purpose`) to perform the review and r
 - **Context hygiene** — screenshots are large (~1MB each); the sub-agent absorbs the image tokens and returns only text.
 - **Less self-bias** — a fresh reviewer that did NOT write the code critiques harder than the implementer reviewing its own work (the whole point: catch the subtle stuff).
 
-Give the sub-agent: the screens/flows to check, what changed, the project companion's launch/auth content, and the **Critic mode** checklist below; tell it to load the Playwright MCP browser tools via ToolSearch, Read each screenshot, and return concrete issues with severity (or what it inspected if clean). Relay the findings; fix; re-dispatch to re-review.
+Give the sub-agent: the screens/flows to check, what changed, the project companion's launch/auth content, and the **Critic mode** checklist below; tell it to load the Playwright MCP browser tools via ToolSearch, Read each screenshot, and return concrete issues with severity (or what it inspected if clean). Relay the findings; fix; send the re-review to the SAME agent with SendMessage — it keeps the launch, URL and test-account context, so a re-check costs a fraction of a fresh dispatch.
 
 Inline (no sub-agent) is acceptable only for a trivial single-element glance. The MCP browser is a single shared instance — never drive it from two agents at once.
 
@@ -33,7 +33,8 @@ Inline (no sub-agent) is acceptable only for a trivial single-element glance. Th
 
 1. **Output dir:** screenshots write under the MCP's configured output root (commonly `<repo>/.playwright-mcp/` — gitignored, local, never committed). Use absolute paths like `<repo>/.playwright-mcp/NN-name.png`.
 2. Navigate per the project companion (base URL, auth). After each screenshot, **Read the PNG** — the point is to actually look, not just save it.
-3. **Check both viewports:** `browser_resize` to desktop (1440×900) AND mobile (390×844).
+3. **Check three viewports:** `browser_resize` to desktop (1440×900), mobile (390×844), AND a short phone (360×780 or 390×664) — a button hidden behind the tab bar showed up only on the short one.
+4. **Shoot a fixed, named set** (`NN-screen-viewport-state.png`) so the critics and a later re-review compare like with like.
 
 ## Critic mode (the important part)
 
@@ -43,7 +44,9 @@ Inline (no sub-agent) is acceptable only for a trivial single-element glance. Th
 - **Clipping & overflow** — rings/shadows/badges clipped by `overflow`/scroll containers (esp. the first/last item in a scroll rail, and top/left edges); text truncation; content spilling out.
 - **Stacking / z-index** — modals/popovers/toasts above the navbar and other overlays; backdrops cover the full viewport (watch for elements trapped in a `transform`/`z-index` stacking context — portal them).
 - **Alignment & spacing** — misalignment, inconsistent padding/gaps, cramped or oddly-floating elements.
-- **Edge cases** — long names, empty / loading / error states, many items (does it scroll?), a single item, missing images.
+- **Edge cases** — long names, empty / loading / error states, many items (does it scroll?), a single item, missing images. Seed these states rather than wait for them (an emulator-only write for balance 0 / sufficient), and look at real data when the project has an export — a dark portrait that vanished was invisible with letter avatars.
+- **Measure, don't eyeball** — `browser_evaluate` with `getBoundingClientRect` on the elements in question. Half-pixel positions blurring a line, a 1px protrusion and a 12px-off avatar column were caught by numbers, not by looking.
+- **What jsdom tests cannot catch** — a server component importing a client hook (the whole route 500s), sticky/overflow container bugs, breakpoint transitions, focus return when a modal closes (`inert`). After a structural change, `curl` the route for its status code first, then render in the browser.
 - **Dark mode** — invisible text, low contrast, wrong-on-dark colors.
 - **Responsive** — mobile width: nav collapses, grids reflow, things wrap instead of overflow, tap targets aren't tiny.
 - **Consistency** — does it reuse the design system's components/tokens, or reimplement them (off-scale radius, one-off button, stray hex)? Whether the resulting design *language* holds together is `aesthetic-critic`'s axis.
@@ -52,7 +55,7 @@ If genuinely nothing is found, say *what was specifically inspected* — never j
 
 ## Follow-up passes — aesthetic-critic and usability-critic
 
-The pass above only answers "does it render correctly." Two personal agents (`~/.claude/agents/`) answer the other two questions — on a design-meaningful change, run BOTH. Neither repeats the functional checklist above.
+The pass above only answers "does it render correctly." Two personal agents (`~/.claude/agents/`) answer the other two questions — on a design-meaningful change, run BOTH **on the first pass**, not after the functional fixes — deferring aesthetic-critic once produced 16 findings in a lump that should have steered those fixes. Neither repeats the functional checklist above.
 
 **Keep the three questions apart.** All three passes stare at the same state affordances, so a finding filed under the wrong pass gets fixed twice or not at all. This pass asks whether a state is **rendered at all** (drawn, unclipped, legible, present on mobile); `aesthetic-critic` asks whether its **visual weight is right**; `usability-critic` asks whether a person can **tell what it means and act on it**.
 
