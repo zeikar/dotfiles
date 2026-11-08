@@ -7,6 +7,7 @@
 - Ask before changing behavior, security, or a public API in ways the request
   didn't spell out.
 - If a simpler approach exists, say so. Push back when warranted.
+- An ambiguous instruction gets your one-line reading of it before you act on it.
 
 ## 2. Simplicity First
 

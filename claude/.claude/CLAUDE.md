@@ -13,7 +13,8 @@ Hand off:
 - UI design: when the change makes visual decisions - a new screen or section,
   or reshaping an existing one's layout, hierarchy, or color - generate 1-2
   mockups with codex-image first, then build with frontend-design using them as
-  reference, not spec. Skip when the look is already decided and you're only
+  reference, not spec; when you recommend departing from the mockup, say so and
+  why. Skip when the look is already decided and you're only
   adjusting within it (spacing, a label, reusing an existing component).
 
 A reviewer needs no special agent type - general-purpose is enough. Give it a
