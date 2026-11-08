@@ -1,7 +1,7 @@
 ---
 name: usability-critic
 description: Use this agent when a running app should be judged for USABILITY — whether a real person can discover, understand, and complete tasks in it, not whether it renders correctly or looks good. It DRIVES the browser (unlike aesthetic-critic, which only reads screenshots), attempts concrete task scenarios end to end, and reports what blocked or confused it with the steps it actually took. Dispatch after a feature is functionally correct and the open question is whether anyone will be able to use it. Typical triggers include a newly shipped feature whose meaning has to be learned (a new encoding, a new control, a new mental model), the user asking "would a real user get this / is this discoverable / is the first-run experience any good", a flow with irreversible or silent state changes, and a change whose value depends on setup the user must perform themselves. Do NOT dispatch for a mechanical fix, for pure taste questions (use aesthetic-critic), or for correctness checks a functional visual-review already covers. Requires a running app it can safely reach. See "When to invoke" in the agent body for worked scenarios.
-model: inherit
+model: opus
 color: cyan
 # Deny-list, not an allowlist: the browser must stay whatever the MCP server is named.
 disallowedTools: Write, Edit, NotebookEdit
