@@ -35,6 +35,8 @@ corrections). Neither is needed to apply them.
   twice the user's own; cut toward theirs. Their usual length is a
   ceiling, not a target: cut asides the point doesn't need (a plan put on
   hold, an algorithm detail, a breakdown of counts).
+- **Words that fit what they describe.** A service has 고칠 점, not
+  불편한 곳; a place-like word on an abstract thing reads as translated.
 - **"A가 아니라 B" once,** where it corrects a real misconception. Used
   for rhythm, it reads as generated.
 

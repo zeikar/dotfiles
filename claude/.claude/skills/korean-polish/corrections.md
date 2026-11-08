@@ -12,6 +12,9 @@ when applying the rules.
   sentences and the user's own 5.9. A 4,141-character blog post read long
   to the user though it sat mid-range for their blog; they approved
   cutting it to 3,454.
+- **Words that fit what they describe.** In a service notice, the user
+  found "써 주신 덕분에 불편한 곳을 많이 찾았어요" awkward; it became
+  "고칠 점을 많이 알게 됐어요".
 
 ## Typed text
 
