@@ -6,9 +6,9 @@ Dotfiles repo, GNU Stow managed. Human docs: see README.md.
 
 - `~/.claude/CLAUDE.md` is a **symlink** into this repo. Edit the real
   target `claude/.claude/CLAUDE.md`, never the `$HOME` path (write fails).
-- `codex/.codex/AGENTS.md` holds the **shared** global guidelines (§1–6);
+- `codex/.codex/AGENTS.md` holds the **shared** global guidelines (§1–5);
   `claude/.claude/CLAUDE.md` imports it (`@~/.codex/AGENTS.md`) and adds only
-  Claude-only §7 "Delegate What Pays". Edit shared rules in AGENTS.md. Keep §7
+  Claude-only §6 "Delegate What Pays". Edit shared rules in AGENTS.md. Keep §6
   out of AGENTS.md: Codex reads it as the explicit request its defaults require
   before spawning sub-agents.
 - Stow-managed: edit files inside the repo, not the linked copies in `$HOME`.

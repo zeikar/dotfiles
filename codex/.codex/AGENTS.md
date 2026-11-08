@@ -17,20 +17,11 @@
 - No speculative error handling; do handle realistic I/O, network, input, and parsing failures.
 - Don't silently swallow errors (empty catch / `except: pass`).
 - Comment *why*, not *what*. No narrating self-evident code.
+- Where your change overlaps something that already exists - a code path doing
+  the same job, a doc sentence it makes stale - update that thing rather than
+  adding a second copy beside it.
 
-## 3. Scope of Change
-
-**Touch only what you must - but where you do touch, fix rather than duplicate.**
-
-Don't "improve" or refactor adjacent code that isn't broken. Where your change
-overlaps something that already exists - a code path doing the same job, a doc
-sentence it makes stale - update that thing rather than adding a second copy
-beside it.
-
-New code that is its own concern goes in its own file rather than pushing an
-existing one past ~500 lines. Don't split a large file unasked - mention it.
-
-## 4. Goal-Driven Execution
+## 3. Goal-Driven Execution
 
 **Define success criteria. Loop until verified.**
 
@@ -38,7 +29,7 @@ For a bug, reproduce it first - with a failing test where one fits - and watch t
 fix make it pass. Otherwise run whatever proves the change works before calling it
 done.
 
-## 5. Efficient Search
+## 4. Efficient Search
 
 **Never scan broad filesystem roots. Narrow scope first.**
 
@@ -47,7 +38,7 @@ done.
 - Locate the relevant subtree first (list one level, follow the path), then search inside it.
 - If a wide search is truly unavoidable, bound it (`-maxdepth`, a known root) and say why.
 
-## 6. This Machine
+## 5. This Machine
 
 macOS with a BSD userland, so GNU-only tools are missing:
 - No `timeout` / `gtimeout`. Use the Bash tool's own timeout; inside a script,
