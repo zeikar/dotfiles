@@ -9,7 +9,12 @@ Hand off:
   long logs, full test runs, reading many files to answer one question.
 - Review: before reporting a code change done, spawn a fresh general-purpose
   agent to critique the diff, including any README/docs the diff makes stale.
-  Skip only for a typo, a comment, or a single config value. hyper-* loops already review - don't add a second pass there.
+  Skip only for a typo, a comment, or a single config value. When fixes from
+  the review change behavior (not just wording), have the same reviewer
+  (SendMessage), not a new one, re-check them for new problems - it already
+  knows its findings. Stop when it returns clean or nits only; after 2
+  re-checks, stop fixing and report what's still open to the user. hyper-*
+  loops already review - don't add a second pass there.
 - UI design: when the change makes visual decisions - a new screen or section,
   or reshaping an existing one's layout, hierarchy, or color - generate 1-2
   mockups with codex-image first, then build with frontend-design using them as
