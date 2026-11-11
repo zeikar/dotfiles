@@ -28,3 +28,12 @@ A reviewer needs no special agent type - general-purpose is enough. Give it a
 fresh agent so it doesn't inherit your reasoning; fork when the work needs what you
 already know, so there's nothing to brief. Keep it yourself only when the steps
 depend tightly on each other.
+
+Most sub-agents run on your model unless you set `model`. On the built-in types
+(general-purpose, claude, Explore, Plan) set it: haiku when the agent only
+fetches raw material (a command's output, a definition, lines from a log),
+sonnet when it has to sift or conclude (many files, a long log or a test run
+down to one answer), opus when it judges (review, critique, planning). Leave
+it unset when the work needs your own reasoning level or the pick would be
+above your own model. Custom and plugin agents keep the model their definition
+sets - don't override it.
