@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- Source of docs/assets/social-preview.jpg. Art: hero-art.jpg (generated). The status line
+     is real statusline.sh output on sample session JSON. Re-render: render.sh. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { background: transparent; }
+  .hero {
+    position: relative; width: 1280px; height: 640px; overflow: hidden;
+    background: #f4ede3 url("hero-art.jpg") -36px center / auto 100% no-repeat;
+    font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #1f2433;
+  }
+  .copy { position: absolute; left: 640px; top: 50%; transform: translateY(-50%); }
+  .eyebrow { font: 600 14px/1 Inter, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #6a62d0; }
+  h1 { margin-top: 18px; font: 800 76px/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: -.04em; }
+  h1 .home { color: #e09a2f; }
+  .tagline { margin-top: 20px; max-width: 520px; font-size: 21px; line-height: 1.45; color: #4a4f5e; font-weight: 500; text-wrap: balance; }
+  .tagline b { color: #1f2433; font-weight: 700; }
+
+  .term {
+    margin-top: 30px; width: 576px; border-radius: 12px; overflow: hidden;
+    background: #1f2433; border: 2px solid #1f2433;
+    box-shadow: 6px 6px 0 #6a62d0;
+  }
+  .bar { display: flex; align-items: center; gap: 7px; padding: 9px 14px; background: #2a3042; }
+  .bar i { width: 10px; height: 10px; border-radius: 50%; background: #4a5164; }
+  .bar span { margin-left: 8px; font: 500 12px/1 "JetBrains Mono", monospace; color: #9aa2b4; }
+  pre { padding: 13px 16px 15px; font: 500 12px/1.65 "JetBrains Mono", ui-monospace, monospace; color: #e6e9ef; white-space: pre; }
+  .d { color: #8a93a6; } .b { font-weight: 700; }
+  .c { color: #6fd6c8; } .y { color: #f2c66d; } .m { color: #d48cf0; } .u { color: #8ab0ff; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="copy">
+    <div class="eyebrow">macOS · Claude Code · GNU Stow</div>
+    <h1><span class="home">~/</span>dotfiles</h1>
+    <p class="tagline">Shell, Homebrew and macOS setup, plus my <b>Claude Code</b> config: skills, agents and a status line.</p>
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i><span>~/.claude/statusline.sh</span></div>
+<pre><span class="c b">Fable 5.2</span><span class="d">·high</span>  <span class="d">ctx</span> <span class="c">███░░░░░░░</span> 34%  📁 dotfiles  🌿 main  💰 <span class="y">$1.84</span> <span class="d">· 25m</span>
+<span class="d">claude</span>  <span class="d">5h</span> <span class="m">███░░░░░</span>  42% <span class="d">⟳1h59m</span>   <span class="d">7d</span> <span class="u">█░░░░░░░</span>  18% <span class="d">⟳3d11h</span>
+<span class="d">codex </span>  <span class="d">5h</span> <span class="m">░░░░░░░░</span>   0% <span class="d">⟳4h59m</span>   <span class="d">7d</span> <span class="u">░░░░░░░░</span>  11% <span class="d">⟳4d12h</span></pre>
+    </div>
+  </div>
+</div>
+</body>
+</html>

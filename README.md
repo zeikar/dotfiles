@@ -89,7 +89,7 @@ dotfiles/
 │   └── .claude/
 │       ├── CLAUDE.md            # imports ~/.codex/AGENTS.md + Claude-only delegation section
 │       ├── settings.json
-│       ├── statusline.sh        # custom 2-line status line (context + rate-limit gauges)
+│       ├── statusline.sh        # custom 3-line status line (context + Claude/Codex rate-limit table)
 │       ├── agents/
 │       │   ├── aesthetic-critic.md   # taste/craft critique of already-captured UI screenshots
 │       │   └── usability-critic.md   # task-scenario usability critique (drives the browser itself)
@@ -101,6 +101,7 @@ dotfiles/
 │   └── .codex/
 │       └── AGENTS.md  # shared global guidelines (Codex reads it directly, Claude imports it)
 ├── docs/
+│   ├── assets/        # social-preview.jpg, rendered from src/hero.html by src/render.sh
 │   └── claude-code.md # what Claude Code writes into this repo, and what to do with it
 ├── git/
 │   └── .gitconfig
