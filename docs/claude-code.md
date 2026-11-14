@@ -6,7 +6,7 @@ some Claude Code actions show up here as diffs. What to do with each:
 ## `"model"` in settings.json
 
 `/model` writes the chosen model into `claude/.claude/settings.json`. The model is
-pinned to `fable`, the default on every machine using these dotfiles. A diff on that
+pinned to `opus`, the default on every machine using these dotfiles. A diff on that
 key means `/model` picked something else: commit it only to change the default
 everywhere, otherwise restore the line.
 
